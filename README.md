@@ -1,2 +1,2 @@
 # Fishnew
-no
+frontend
