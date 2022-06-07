@@ -1,0 +1,253 @@
+<div class="">
+    <ul class="nav nav-tabs mb-3">
+      <li class="nav-item">
+        <button class="nav-link" [routerLink]="['/information']">
+            <h6>Hồ sơ của tôi</h6>
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" [routerLink]="['/order']">
+            <h6>Đơn hàng</h6>
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link active" [routerLink]="['/card-payment']">
+            <h6>Giỏ hàng</h6>
+        </button>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane fade show active">
+        <div class="tab-pane mb-3">
+          <div class="row px-md-4 px-2 pt-0">
+            <div class="col-lg-8">
+              <p class="pb-2 fw-bold">Sản phẩm</p>
+              <div class="card">
+                  <div class="table-responsive">
+                    <table class="table table-striped mb-0" style="font-size: 13px;">
+                      <thead>
+                        <tr class="table-info">
+                            <th>Stt</th>
+                            <th>Sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of carts; let i = index" class="border-bottom">
+                        <td>{{i+1}}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                              <div style="width: 120px;">
+                                  <img style="cursor: pointer;" (click)="changeNameProduct(item)" class="pic" style="width: 100%; max-height: 80px;" src="{{item.product_image_path}}" alt=""> 
+                              </div>
+                              <div style="width: 140px;" class="ps-3 d-flex flex-column justify-content">
+                                    <small style="color: rgb(55, 165, 255); cursor: pointer;" (click)="changeNameProduct(item)"> 
+                                        <span class=" fw-bold">{{(item.product_name.length>20)? (item.product_name | slice:0:20)+'...':(item.product_name)}}</span> 
+                                    </small>
+                                    <small class=""> 
+                                      <span class=" text-muted">Cá thể: </span> 
+                                      <span class=" fw-bold">{{item.product_sex}}</span> 
+                                  </small>
+                                    <small class=""> 
+                                        <span class=" text-muted">Kích thước: </span> 
+                                        <span class=" fw-bold">{{item.product_size}}</span> 
+                                    </small>
+                                    <small class=""> 
+                                        <span class=" text-muted">Màu sắc: </span> 
+                                        <span class=" fw-bold">{{item.product_color}}</span> 
+                                    </small>
+                                    
+                              </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="width: 100px;">
+                                <p class="pe-3 text-muted text-decoration-line-through"><span>{{formatCash(item.product_old_price.toString())}} VNĐ</span></p>
+                                <p class="red">{{formatCash(item.product_new_price.toString())}} VNĐ</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="stepper">
+                              <button (click)="minusAmount(item)" class="btn-left">–</button>
+                              <button (click)="plusAmount(item)" class="btn-right">+</button>
+                              <label>{{item.product_number}}/<span *ngFor="let p of productAmount"><span *ngIf="p.id == item.product_id">{{p.amount}}</span></span></label>
+                          </div>
+                        </td>
+                        <td>
+                            <div style="width: 100px;" class="d-flex">
+                                <p class="red">{{formatCash(item.product_total_price.toString())}} VNĐ</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="width: 60px;">
+                                <button (click)="deleteCartItem(item.id)" class="btn btn-outline-warning btn-sm"><i class="far fa-trash-alt"></i></button>
+                            </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tbody *ngIf="carts.length < 1">
+                      <tr>
+                        <th colspan="7">Không có sản phẩm nào</th>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div *ngIf="carts.length >= 1" class="mt-1" style="float: right;">
+                <button (click)="clearCartItem()" class="btn btn-danger btn-sm" type="button">
+                  Dọn sạch
+                </button>
+              </div>
+
+            </div>
+            <div class="col-lg-4 payment-summary">
+              <p class="fw-bold pt-lg-0 pt-4 pb-2">Thanh toán</p>
+              <div class="card px-md-3 px-2 pt-4">
+                  <div class="unregistered mb-2"> <span class="py-1">Thông tin thanh toán</span> </div>
+                  <div class="d-flex justify-content-between pb-3"> 
+                    <small class="text-muted">Mã giảm giá (Nếu có)</small>
+                  </div>
+                  <div class="d-flex justify-content-between mb-3">
+                      <input *ngIf="bonuses != 0" disabled="" type="text" [(ngModel)]="bonus_code" class="ps-2" placeholder="Nhập mã">
+                      <input *ngIf="bonuses == 0" type="text" [(ngModel)]="bonus_code" class="ps-2" placeholder="Nhập mã">
+                      
+                      <div *ngIf="bonuses != 0" class="btn btn-secondary" (click)="removeBonuses()" style="width: 160px;">Hủy</div>
+                      <div *ngIf="bonuses == 0" class="btn btn-primary" (click)="getBonuses()" style="width: 160px;">Áp dụng</div>
+                  </div>
+                  <div class="mb-1">
+                    <p>Giảm ngay 10,000 VNĐ <button class="btn btn-outline-primary btn-sm" (click)="changeShowGetEvent(true)">Lấy mã giảm giá</button></p>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <table class="table">
+                      <thead>
+                        <tr style="text-align: center;" style="font-size: 13px;">
+                          <th scope="col">Tên</th>
+                          <th scope="col">Phân loại</th>
+                          <th scope="col">SL</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of carts; let i = index">
+                          <td><small class="text-muted">{{(item.product_name.length>20)? (item.product_name | slice:0:20)+'...':(item.product_name)}}</small></td>
+                          <td style="text-align: center;"><small class="text-muted">{{item.product_sex}},{{item.product_size}},{{item.product_color}}</small></td>
+                          <td style="text-align: center;"><small class="text-muted">x {{item.product_number}}</small></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div> 
+                      <span>Đơn giá sản phẩm:</span>
+                      <span class="red"> +{{formatCash(orderTotalPrice.toString())}} VNĐ</span> <br>
+                    </div>
+                    <div> 
+                      <span>Phí vận chuyển:</span>
+                      <span class="red"><del *ngIf="orderTransportFee == 0" style="font-size: 12px;"> +30,000 VNĐ</del> +{{formatCash(orderTransportFee.toString())}} VNĐ</span> <br>
+                      <span style="color: red; font-size: 12px;">Miễn phí vận chuyển cho đơn hàng trên {{formatCash(mienphivanchuyenkhi.toString())}} VNĐ</span>
+                    </div>
+                    <div> 
+                      <span>Mã giảm giá:</span>
+                      <span *ngIf="bonuses != 0" style="font-size: 12px;" class="red"> {{bonus_code}}</span>
+                      <span *ngIf="bonuses == 0" style="font-size: 12px;" class="red"> Không</span>
+                    </div>
+                    <div class="mb-1">  
+                        <span>Giảm giá:</span>
+                        <span class="red"> {{formatCash(bonuses.toString())}} VNĐ</span> <br>
+                      </div>
+                    <div *ngIf="carts.length >= 1" class="d-flex justify-content-between"> <small class="text-muted" style="font-size: 20px;">Cần thanh toán</small>
+                        <h5 style="font-size: 20px;">{{formatCash(orderPay.toString())}} VNĐ</h5>
+                    </div>
+                  </div>
+                  
+                  <div *ngIf="carts.length >= 1">
+                    <a *ngIf="!nextPay" (click)="changeNextPay(true)" class="btn btn-primary mb-2 mt-2">Tiếp theo</a>
+        
+                    <div *ngIf="nextPay">
+                      <div class="unregistered mb-2 mt-3"> <span class="py-1">Thông tin khách hàng</span> </div>
+
+                    <form [formGroup]="addOrderForm" (submit)="submitOrder()">
+                      <div class="mb-2">
+                        <label for="name-client" class="form-label">Họ tên</label>
+                        <input type="text" required="" formControlName="client_name" class="form-control" id="name-client" aria-describedby="emailHelp">
+                      </div>
+
+                      <div class="mb-2">
+                        <label for="phone-client" class="form-label">Số điện thoại</label>
+                        <input type="text" required="" formControlName="client_phone" class="form-control" id="phone-client">
+                      </div>
+
+                      <div class="mb-2">
+                        <label for="address-client" class="form-label">Địa chỉ</label>
+                        <textarea class="form-control" required="" formControlName="client_address" id="address-client" rows="3" style="max-height: 200px;"></textarea>
+                      </div>
+
+                      <div class="mb-2">
+                        <label for="note-client" class="form-label">Ghi chú cho người bán</label>
+                        <textarea class="form-control" formControlName="client_note" id="note-client" rows="3" style="max-height: 200px;"></textarea>
+                      </div>
+        
+                      <div class="form-check">
+                        <input class="form-check-input" style="width: 18px;" type="radio" name="flexRadioDefault" id="pay-1" checked>
+                        <label class="form-check-label" for="pay-1">
+                          Thanh toán khi nhận hàng
+                        </label>
+                      </div>
+        
+                      <div class="sale mt-2 mb-2">
+                        <span>Vui lòng:</span>
+                        <span class="red ml-1">Kiểm tra thông tin trước khi đặt hàng</span> 
+                      </div>
+
+                      <div class=" d-flex flex-column px-3 mb-1">
+                        <small class="text-muted pb-1">Hôm nay: {{currentDate | date:'yyyy-MM-dd'}}</small>
+                      </div>
+
+                      <ngx-recaptcha2 #captchaElem
+                        required=""
+                        [siteKey]="siteKey"
+                        formControlName="recaptcha">
+                      </ngx-recaptcha2>
+
+                      <button *ngIf="!btnDisabled" [disabled]="!addOrderForm.valid" type="submit" class="btn btn-primary mb-2 mt-2" style="width: 100%;">Đặt hàng</button>
+                      <button *ngIf="btnDisabled" disabled class="btn btn-primary mb-2 mt-2" style="width: 100%;">Đặt hàng</button>
+                    </form>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<div *ngIf="showGetEvent" class="flex-overlay">
+  <div class="flex-div">
+    <form [formGroup]="getEventCodeForm" (submit)="submitEventCode()">
+      <div class="">
+        <h5 style="color: rgb(36, 33, 247); font-weight: 900; text-transform: uppercase;">Lấy mã giảm giá</h5>
+        <button class="btn flex-btn btn-outline-danger pr-3 pl-3" (click)="changeShowGetEvent(false)">X</button>
+      </div>
+      <div class="form-outline mb-3">
+        <label class="form-label" for="form1Example1">Họ & Tên</label>
+        <input type="text" required="" formControlName="name" id="form1Example1" class="form-control" />
+      </div>
+      <div class="form-outline mb-3">
+        <label class="form-label" for="form1Example2">Email</label>
+        <input type="email" required="" formControlName="email" id="form1Example2" class="form-control" />
+      </div>
+
+       <!-- <ngx-recaptcha2 #captchaElem
+          required=""
+          [siteKey]="siteKey"
+          formControlName="recaptcha">
+      </ngx-recaptcha2> -->
+
+      <button type="submit" [disabled]="!getEventCodeForm.valid" class="btn btn-primary mt-3">Lấy mã</button>
+    </form>
+  </div>
+</div>

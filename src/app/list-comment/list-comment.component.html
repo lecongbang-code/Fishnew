@@ -1,0 +1,90 @@
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Đánh giá ({{listComment.length}})</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a routerLink="../">Admin</a></li>
+                        <li class="breadcrumb-item active">Đánh giá</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header border-transparent">
+                        <h3 class="card-title">Đánh giá ({{listComment.length}})</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        </div>
+                        <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table m-0">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã</th>
+                                <th>Tên khách</th>
+                                <th colspan="2">Sản phẩm</th>
+                                <th>Xếp hạng</th>
+                                <th>Nội dung</th>
+                                <th>Ngày đánh giá</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                            </thead>
+                            <tbody *ngFor="let item of listComment | paginate: { itemsPerPage: 15, currentPage: page, totalItems: totalLength }; let i = index">
+                                <tr class="list">
+                                    <td>{{i+1}}</td>
+                                    <td>#{{item.id}}</td>
+                                    <td><div style="width: 110px;">{{item.client_name}}</div></td>
+                                    <td><img width="100" height="60" (click)="changeNameProduct(item)" src="{{item.product_img}}" alt=""></td>
+                                    <td>
+                                        <a style="width: 130px;" (click)="changeNameProduct(item)">
+                                            {{ (item.product_name.length>20)? (item.product_name | slice:0:20)+'...':(item.product_name) }}
+                                        </a> <br>
+                                        <span *ngFor="let rc of replyComments">
+                                            <span class="mr-2" *ngIf="rc.comment_id == item.id">Đã trải lời</span>
+                                        </span>
+                                    </td>
+                                    <td><div style="width: 80px;">{{item.rating}}</div></td>
+                                    <td><div style="width: 220px;">
+                                        {{ (item.content.length>20)? (item.content | slice:0:20)+'...':(item.content) }}
+                                    </div></td>
+                                    <td><div style="width: 110px;">{{item.created_at}}</div></td>
+                                    <td>
+                                        <div  style="width: 150px;" class="form-group">
+                                            <div class="custom-control custom-switch">
+                                                <input (ngModelChange)="update_status(item.id, !item.status, item)" [(ngModel)]="item.status" type="checkbox" class="custom-control-input" id="status{{item.id}}">
+                                                <label class="custom-control-label" for="status{{item.id}}">Hoạt động</label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            </table>
+                        </div>
+                        </div>
+                        <div class="card-footer clearfix">
+                            <pagination-controls previousLabel="" nextLabel="" (pageChange)="page = $event"></pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+  </div>

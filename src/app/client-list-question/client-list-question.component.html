@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Câu hỏi của tôi ({{questions.length}})</h3>
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse">
+            <i class="fas fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-tool" data-card-widget="remove">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="card-body p-0">
+        <ul class="products-list product-list-in-card pl-2 pr-2">
+          <li *ngFor="let item of questions | paginate: { id: 'pagination2', itemsPerPage: 10, currentPage: page, totalItems: totalLength }; let i = index" class="item">
+            <div class="product-img mr-2">
+              <img src="{{item.product_img}}" alt="Product Image">
+            </div>
+            <div class="product-info">
+              <a style="color: rgb(55, 165, 255); cursor: pointer;" (click)="changeNameProduct(item)" class="product-title">
+                {{ (item.product_name.length>30)? (item.product_name | slice:0:30)+'...':(item.product_name) }}
+                <span *ngFor="let r of replyQuestions" class="badge badge-danger float-right mr-1">
+                  <span *ngIf="r.question_id == item.id">Có hồi đáp</span>
+                </span>
+              </a>
+              <span class="product-description">
+                {{item.content}}
+              </span>
+            </div>
+          </li>
+          <li *ngIf="questions.length == 0">
+            <div><h6>Không có câu hỏi nào</h6></div>
+          </li>
+        </ul>
+      </div>
+      <div class="card-footer mb-0 pb-0">
+        <pagination-controls id="pagination2" previousLabel="" nextLabel="" (pageChange)="page = $event"></pagination-controls>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <app-client-list-comment></app-client-list-comment>
+  </div>
+</div>

@@ -1,0 +1,92 @@
+<div class="content-wrapper">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Câu hỏi ({{listQuestion.length}})</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a routerLink="../">Admin</a></li>
+              <li class="breadcrumb-item active">Câu hỏi</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header border-transparent">
+              <h3 class="card-title">Câu hỏi ({{listQuestion.length}})</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table m-0">
+                  <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>Mã</th>
+                    <th>Tên khách</th>
+                    <th colspan="2">Sản phẩm</th>
+                    <th>Nội dung</th>
+                    <th>Ngày hỏi</th>
+                    <th>Trạng thái</th>
+                  </tr>
+                  </thead>
+                  <tbody *ngFor="let item of listQuestion | paginate: { itemsPerPage: 15, currentPage: page, totalItems: totalLength }; let i = index">
+                    <tr class="list">
+                        <td>{{i+1}}</td>
+                        <td>#{{item.id}}</td>
+                        <td><div style="width: 100px;">{{item.client_name}}</div></td>
+                        <td><img  (click)="changeNameProduct(item)" width="100" height="60" src="{{item.product_img}}" alt=""></td>
+                        <td>
+                          <a (click)="changeNameProduct(item)" style="width: 130px;">
+                            {{ (item.product_name.length>20)? (item.product_name | slice:0:20)+'...':(item.product_name) }}
+                          </a> <br>
+                          <span *ngFor="let rq of replyQuestions">
+                            <span class="mr-2" *ngIf="rq.question_id == item.id">Đã trải lời</span>
+                          </span>
+                        </td>
+                        <td><div style="width: 220px;">
+                          {{ (item.content.length>20)? (item.content | slice:0:20)+'...':(item.content) }}
+                        </div></td>
+                        <td><div style="width: 150px;">{{item.created_at}}</div></td>
+                        <td>
+                          <div style="width: 150px;" class="form-group">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" (ngModelChange)="update_status(item.id, !item.status, item)" [(ngModel)]="item.status" class="custom-control-input" id="status{{item.id}}">
+                                <label class="custom-control-label" for="status{{item.id}}">Hoạt động</label>
+                            </div>
+                        </div>
+                        </td>
+                      </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer clearfix">
+              <pagination-controls previousLabel="" nextLabel="" (pageChange)="page = $event"></pagination-controls>
+            </div>
+            <!-- /.card-footer -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>

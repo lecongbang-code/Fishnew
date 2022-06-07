@@ -1,0 +1,77 @@
+<div class="">
+    <ul class="nav nav-tabs mb-3">
+      <li class="nav-item">
+        <button class="nav-link" [routerLink]="['/information']">
+            <h6>Hồ sơ của tôi</h6>
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link active" [routerLink]="['/order']">
+            <h6>Đơn hàng</h6>
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" [routerLink]="['/cart']">
+            <h6>Giỏ hàng</h6>
+        </button>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane fade show active">
+        <section class="content">
+            <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table m-0">
+                        <thead>
+                        <tr class="table-info" style="font-size: 13px;">
+                            <th>Stt</th>
+                            <th>Mã</th>
+                            <th>Tên khách</th>
+                            <th>SĐT</th>
+                            <th>Địa chỉ</th>
+                            <th>Tên đơn</th>
+                            <th>Đơn giá</th>
+                            <th>Ngày đặt</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                        </thead>
+                        <tbody style="font-size: 13px;">
+                            <tr *ngFor="let item of orders | paginate: { itemsPerPage: 15, currentPage: page, totalItems: totalLength }; let i = index">
+                                <td><div style="width: 10px;">{{i+1}}</div></td>
+                                <td><a [routerLink]="['/order-detail', item.id]">#{{item.id}}</a></td>
+                                <td><div style="width: 110px;">{{item.client_name}}</div></td>
+                                <td><div style="width: 90px;">{{item.client_phone}}</div></td>
+                                <td><div style="width: 170px;">{{item.client_address}}</div></td>
+                                <td><div style="width: 200px;">{{(item.order_name.length>30)? (item.order_name | slice:0:30)+'...':(item.order_name)}}</div></td>
+                                <td><div style="width: 110px;">{{formatCash(item.order_total_price.toString())}} VNĐ</div></td>
+                                <td><div style="width: 90px;">{{item.created_at | date:'yyyy-MM-dd'}}</div></td>
+                                <td *ngIf="item.status == 'Đang chờ'" ><div style="width: 80px;"><span class="badge badge-warning">{{item.status}}</span></div></td>
+                                <td *ngIf="item.status == 'Đang lấy hàng'"><div style="width: 80px;"><span class="badge badge-secondary">{{item.status}}</span></div></td>
+                                <td *ngIf="item.status == 'Đang giao'"><div style="width: 80px;"><span class="badge badge-info">{{item.status}}</span></div></td>
+                                <td *ngIf="item.status == 'Đã nhận'"><div style="width: 80px;"><span class="badge badge-success">{{item.status}}</span></div></td>
+                                <td *ngIf="item.status == 'Đã hủy'"><div style="width: 80px;"><span class="badge badge-danger">{{item.status}}</span></div></td>
+                                <td><div style="width: 70px;"><span [routerLink]="['/order-detail', item.id]" class="btn btn-outline-info btn-sm">Chi tiết</span></div></td>
+                            </tr>
+                            <tr *ngIf="orders.length < 1">
+                              <td colspan="10">Không đơn hàng nào</td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                    </div>
+                    <div class="card-footer pb-0" >
+                      <pagination-controls style="margin-bottom: 0rem;" previousLabel="" nextLabel="" (pageChange)="page = $event"></pagination-controls>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </section>
+      </div>
+    </div>
+  </div>

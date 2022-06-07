@@ -1,0 +1,270 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Khuyến mãi</h1>
+            <div class="margin mt-3">
+              <div class="btn-group">
+                <button type="button" class="btn btn-default">Tất cả</button>
+                <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu" role="menu">
+                  <a class="dropdown-item" (click)="changeSelectStatus('')">Tất cả</a>
+                  <a class="dropdown-item" (click)="changeSelectStatus('1')">Hoạt động</a>
+                  <a class="dropdown-item" (click)="changeSelectStatus('0')">Dừng</a>
+                </div>
+              </div>
+            </div>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a routerLink="../">Admin</a></li>
+              <li class="breadcrumb-item active">Khuyến mãi</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- Left col -->
+            <div class="col-md-8">
+              <!-- TABLE: LATEST ORDERS -->
+              <div class="card">
+                <div class="card-header border-transparent">
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                  <div class="navbar-dark">
+                    <form class="form-inline">
+                        <div class="input-group input-group-sm">
+                          <input (ngModel)="find_text" name="find_text" (ngModelChange)="find_text_filter_control.next($event)" class="form-control form-control-navbar" type="search" placeholder="Tìm kiếm mã thưởng" aria-label="Search">
+                          <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                              <i class="fas fa-search"></i>
+                            </button>
+                          </div>
+                        </div>
+                    </form>
+                </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table class="table m-0">
+                      <thead>
+                      <tr>
+                        <th>STT</th>
+                        <th>Mã thưởng</th>
+                        <th>Tiêu đề</th>
+                        <th>Tiền thưởng</th>
+                        <th>Số lượng</th>
+                        <th>Ngày bắt đầu</th>
+                        <th>Ngày kết thúc</th>
+                        <th>Trạng thái</th>
+                        <th colspan="2">Thao tác</th>
+                      </tr>
+                      </thead>
+                      <tbody *ngFor="let item of listEvent | paginate: { itemsPerPage: 15, currentPage: page, totalItems: totalLength }; let i = index">
+                      <tr class="list">
+                        <td>{{i+1}}</td>
+                        <td><div style="width: 110px;">{{item.bonus_code}}</div></td>
+                        <td><div style="width: 120px;">{{item.title}}</div></td>
+                        <td><div style="width: 110px;">{{formatCash(item.bonuses)}} VNĐ</div></td>
+                        <td><div style="width: 50px;">{{item.amount}}</div></td>
+                        <td><div style="width: 100px;">{{item.created_at | date:'yyyy-MM-dd'}}</div></td>
+                        <td><div style="width: 100px;">{{item.updated_at | date:'yyyy-MM-dd'}}</div></td>
+                        <td *ngIf="item.status == true"><div style="width: 100px;"><span class="badge badge-success">Hoạt động</span></div></td>
+                        <td *ngIf="item.status == false"><div style="width: 100px;"><span class="badge badge-warning">Dừng</span></div></td>
+                        <td style="text-align: right;">
+                            <div style="width: 80px;"><a (click)="getEventId(item.id)" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Sửa</a></div>
+                        </td>
+                        <td>
+                            <div style="width: 80px;"><a (click)="deleteConfirmed(item.id)" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a></div>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.table-responsive -->
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                  <pagination-controls previousLabel="" nextLabel="" (pageChange)="page = $event"></pagination-controls>
+              </div>
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-4">
+              <!-- PRODUCT LIST -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Thêm mã thưởng</h3>
+
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.card-header -->
+                  
+                    <div class="card-body p-0">
+                      <form id="addEvent" [formGroup]="addEventForm" (submit)="addEvent()">
+                        <ul class="products-list product-list-in-card pl-2 pr-2">
+                          <div class="form-group">
+                              <label class="col-form-label" for="">Mã thưởng</label>
+                              <input type="text" formControlName="bonus_code" required id="bonus_code" class="form-control" placeholder="Nhập mã thưởng">
+                          </div>
+                          <div class="form-group">
+                              <label class="col-form-label" for="">Tiêu đề</label>
+                              <input type="text" formControlName="title" required id="title" class="form-control" placeholder="Nhập tiêu đề">
+                          </div>
+                          <div class="form-group">
+                              <label class="col-form-label" for="">Tiền thưởng</label>
+                              <input type="number" formControlName="bonuses" required id="bonuses" class="form-control" placeholder="Nhập mức thưởng">
+                          </div>
+                          <div class="form-group">
+                            <label class="col-form-label" for="">Số lượng</label>
+                            <input type="number" formControlName="amount" required id="amount" class="form-control" placeholder="Nhập số lượng giới hạn">
+                        </div>
+                          <div class="form-group">
+                            <label>Ngày bắt đầu</label>
+                            <div class="col-12">
+                                <div class="input-group">
+                                  <input formControlName="created_at" required="" class="form-control" id="days" placeholder="yyyy-mm-dd"
+                                        name="dps" ngbDatepicker #dayS="ngbDatepicker">
+                                  <button class="btn btn-outline-secondary calendar" (click)="dayS.toggle()" type="button">
+                                    <i class="fa-solid fa-calendar"></i>
+                                  </button>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label>Ngày kết thúc</label>
+                            <div class="col-12">
+                                <div class="input-group">
+                                  <input formControlName="updated_at" required="" class="form-control" id="daye" placeholder="yyyy-mm-dd"
+                                        name="dpe" ngbDatepicker #dayE="ngbDatepicker">
+                                  <button class="btn btn-outline-secondary calendar" (click)="dayE.toggle()" type="button">
+                                    <i class="fa-solid fa-calendar"></i>
+                                  </button>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-form-label">Trạng thái</label>
+                              <div class="custom-control custom-switch">
+                                  <input type="checkbox" formControlName="status" class="custom-control-input" id="status1">
+                                  <label class="custom-control-label" for="status1">Hoạt động</label>
+                              </div>
+                          </div>
+                        </ul>
+                      </form>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer text-center">
+                      <button type="submit" form="addEvent" [disabled]="!addEventForm.valid" class="btn btn-info"><i class="fa-solid fa-plus"></i> Thêm</button>
+                    </div>
+              </div>
+              <!-- /.card -->
+
+              <div *ngIf="acEdit" class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Cập nhật mã thưởng - (#{{event[0].id}})</h3>
+
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.card-header -->
+                  
+                    <div class="card-body p-0">
+                      <form id="editEvent" [formGroup]="editEventForm" (submit)="editEvent()">
+                        <ul class="products-list product-list-in-card pl-2 pr-2">
+                          <div class="form-group">
+                              <label class="col-form-label" for="">Mã thưởng</label>
+                              <input type="text" formControlName="bonus_code" required id="bonus_code" class="form-control" placeholder="Nhập mã thưởng">
+                          </div>
+                          <div class="form-group">
+                              <label class="col-form-label" for="">Tiêu đề</label>
+                              <input type="text" formControlName="title" required id="title" class="form-control" placeholder="Nhập tiêu đề">
+                          </div>
+                          <div class="form-group">
+                              <label class="col-form-label" for="">Tiền thưởng</label>
+                              <input type="number" formControlName="bonuses" required id="bonuses" class="form-control" placeholder="Nhập mức thưởng">
+                          </div>
+                          <div class="form-group">
+                            <label class="col-form-label" for="">Số lượng</label>
+                            <input type="number" formControlName="amount" required id="amount" class="form-control" placeholder="Nhập số lượng giới hạn">
+                        </div>
+                          <div class="form-group">
+                            <label>Ngày bắt đầu</label>
+                            <div class="col-12">
+                                <div class="input-group">
+                                  <input formControlName="created_at" class="form-control" id="dayse" placeholder="Ngày: {{event[0].created_at | date:'yyyy-MM-dd'}}"
+                                        name="dpse" ngbDatepicker #daySe="ngbDatepicker">
+                                  <button class="btn btn-outline-secondary calendar" (click)="daySe.toggle()" type="button">
+                                    <i class="fa-solid fa-calendar"></i>
+                                  </button>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label>Ngày kết thúc</label>
+                            <div class="col-12">
+                                <div class="input-group">
+                                  <input formControlName="updated_at" class="form-control" id="dayee" placeholder="Ngày: {{event[0].updated_at | date:'yyyy-MM-dd'}}"
+                                        name="dpee" ngbDatepicker #dayEe="ngbDatepicker">
+                                  <button class="btn btn-outline-secondary calendar" (click)="dayEe.toggle()" type="button">
+                                    <i class="fa-solid fa-calendar"></i>
+                                  </button>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-form-label">Trạng thái</label>
+                              <div class="custom-control custom-switch">
+                                  <input type="checkbox" formControlName="status" class="custom-control-input" id="statusEdit">
+                                  <label class="custom-control-label" for="statusEdit">Hoạt động</label>
+                              </div>
+                          </div>
+                        </ul>
+                      </form>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer text-center">
+                      <button form="editEvent" type="submit" class="btn btn-success mr-1"><i class="fa-solid fa-floppy-disk"></i> Lưu</button>
+                      <button (click)="setAcEdit(false)" class="btn btn-secondary"><i class="fa-solid fa-rotate-left"></i> Hủy</button>
+                  </div>
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </div>
+    </section>
+</div>

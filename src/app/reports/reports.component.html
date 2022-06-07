@@ -1,0 +1,44 @@
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+      <div class="card-body row">
+        <div class="col-5 text-center d-flex align-items-center justify-content-center">
+          <div class="">
+            <h2><strong>{{footer.name_shop}}</strong></h2>
+            <p class="lead mb-5">Email: {{footer.email}}<br>
+              SĐT: {{footer.phone_1}}
+            </p>
+          </div>
+
+        </div>
+        
+          <div class="col-7">
+            <form [formGroup]="postReportForm" (submit)="submitReport()">
+            <div class="form-group">
+              <label for="inputName">Tên của bạn</label>
+              <input type="text" formControlName="client_name" required="" id="inputName" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="inputMessage">Nội dung</label>
+              <textarea id="inputMessage" formControlName="content" required="" class="form-control" rows="4"></textarea>
+            </div>
+            
+              <ngx-recaptcha2 #captchaElem
+                required=""
+                [siteKey]="siteKey"
+                formControlName="recaptcha">
+              </ngx-recaptcha2>
+              
+            <div class="form-group mt-3">
+              <input style="width: 120px;" [disabled]="!postReportForm.valid" type="submit" class="btn btn-primary" value="Gửi">
+            </div>
+          </form>
+          </div>
+        
+      </div>
+    </div>
+
+  </section>
+  <!-- /.content -->

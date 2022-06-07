@@ -1,0 +1,377 @@
+<div *ngIf="product">
+    <!-- Detail -->
+    <div class="container">
+        <div class="card-detail" style="margin-top: 10px;">
+            <div class="container-fliud">
+                <div class="wrapper row">
+                    <div class="preview col-md-6">
+                        <div class="preview-pic tab-content">
+                            <div class="tab-pane active" id="pic-1">
+
+                                <lib-ngx-image-zoom *ngIf="showImage" 
+                                [thumbImage]=urlImageProduct 
+                                [fullImage]=urlImageProduct 
+                                [magnification]="3" 
+                                [lensWidth]="100"
+                                >
+                                </lib-ngx-image-zoom>
+
+                                <youtube-player 
+                                    class="rounded-start d-flex"
+                                    *ngIf="!showImage"
+                                    videoId={{product.video_path}} 
+                                    suggestedQuality="highres">
+                                </youtube-player>
+                            
+                            </div>
+                        </div>
+                        <ul class="preview-thumbnail nav nav-tabs">
+                            <li *ngIf="product.image_path_1"><img (click)="changeImage(product.image_path_1)" src="{{product.image_path_1}}" alt="{{product.name}}" /></li>
+                            <li *ngIf="product.image_path_2"><img (click)="changeImage(product.image_path_2)" src="{{product.image_path_2}}" alt="{{product.name}}" /></li>
+                            <li *ngIf="product.image_path_3"><img (click)="changeImage(product.image_path_3)" src="{{product.image_path_3}}" alt="{{product.name}}" /></li>
+                            <li *ngIf="product.image_path_4"><img (click)="changeImage(product.image_path_4)" src="{{product.image_path_4}}" alt="{{product.name}}" /></li>
+                            <li class="icon-product" *ngIf="product.image_path_1">
+                                <img (click)="changeVideo()" src="{{product.image_path_1}}" alt="{{product.name}}"/>
+                                <p><i class="fa-brands fa-youtube"></i></p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="details col-md-6">
+                        <h6 class="mb-1">Thể loại: {{category.name}}</h6>
+                        <h4 class="product-title">{{product.name}} (Mã: #{{product.id}})</h4>
+                        <div class="rating">
+                            <div *ngIf="totalRating == 0" class="stars">Đánh giá: ({{totalRating}}) 
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </div>
+                            <div *ngIf="totalRating == 1" class="stars">Đánh giá: ({{totalRating}}) 
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </div>
+                            <div *ngIf="totalRating == 2" class="stars">Đánh giá: ({{totalRating}}) 
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </div>
+                            <div *ngIf="totalRating == 3" class="stars">Đánh giá: ({{totalRating}}) 
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </div>
+                            <div *ngIf="totalRating == 4" class="stars">Đánh giá: ({{totalRating}}) 
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                            </div>
+                            <div *ngIf="totalRating == 5" class="stars">Đánh giá: ({{totalRating}}) 
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                            </div>
+                        </div>
+
+                        <span>Đã bán: ({{totalSele}})</span>
+
+                        <span *ngIf="product.old_price" class="review-no mb-2">Giá góc: <del>{{formatCash(product.old_price.toString())}} VNĐ</del>
+                            <div class="mt-3">
+                                <span style="margin-top: 10px; background-color: rgb(252, 64, 64); padding: 3px 10px 3px 10px; color: white; font-weight: 900; margin-left: 5px; border-radius: 4px;">Giảm {{product.discount}}%</span>
+                            </div>
+                        </span>
+
+                        <h5 *ngIf="product.new_price" class="price">Giá bán mới: <span class="detail-price">{{formatCash(product.new_price.toString())}} VNĐ</span></h5>
+                        <h5 *ngIf="!product.all_sizes_status" class="sizes btn btn-danger" style="font-weight: 600; font-size: 12px;">
+                            <i class="fas fa-check-double"></i> Sản phẩm như hình <i class="fas fa-check-double"></i>
+                        </h5>
+                    <form [formGroup]="addCartForm">
+                     
+                        <div class="mt-2">
+                            <h6 class="sizes" style="width: 160px; float: left;">Cá thể:</h6>
+                            <select class="form-select" formControlName="product_sex" style="width: 125px;" aria-label="Default select example">
+                                <option *ngFor="let item of listSex" value="{{item.name}}"><span>{{item.name}}</span></option>
+                            </select>
+                        </div>
+                        <div class="mt-1">
+                            <h6 class="sizes" style="width: 160px; float: left;">Kích thước:</h6>
+                            <select class="form-select" formControlName="product_size" style="width: 125px;" aria-label="Default select example">
+                                <option *ngFor="let item of listSize" value="{{item.name}}"><span>{{item.name}}</span></option>
+                            </select>
+                        </div>
+                        <div class="mt-1">
+                            <h6 class="sizes" style="width: 160px; float: left;">Màu sắc:</h6>
+                            <select class="form-select" formControlName="product_color" style="width: 125px;" aria-label="Default select example">
+                                <option *ngFor="let item of listColor" value="{{item.name}}"><span>{{item.name}}</span></option>
+                            </select>
+                        </div>
+                        <div class="mt-1">
+                            <h6 class="sizes" style="width: 160px; float: left;">Số lượng:<span style="font-size: 10px;">(Kho {{product.amount}})</span></h6>
+                            <div class="stepper" style="text-align: center;">
+                                <button (click)="minusAmount()" class="btn-left">–</button>
+                                <button (click)="plusAmount()" class="btn-right">+</button>
+                                <input hidden formControlName="product_number" type="number" ngModel="{{number}}">
+                                <label for="">{{number}}</label>
+                            </div>
+                        </div>
+
+                        <div class="pt-5">
+
+                            <a style="margin-left: 5px;">
+                                <button *ngIf="!btnDisabled" class="btn btn-primary" (click)="addCart(product, true)" type="button"><span style="font-weight: 900;"><i class="fa-solid fa-basket-shopping"></i> Mua ngay</span></button>
+                                <button *ngIf="btnDisabled" disabled class="btn btn-primary"><span style="font-weight: 900;"><i class="fa-solid fa-basket-shopping"></i> Mua ngay</span></button>
+                            </a>
+                            <a style="margin-left: 5px;">
+                                <button *ngIf="!btnDisabled" class="btn btn-outline-warning mr-1" (click)="addCart(product, false)" type="button" style="font-weight: 900;"><i class="fas fa-cart-plus"></i> Thêm giỏ hàng</button>
+                                <button *ngIf="btnDisabled" disabled class="btn btn-outline-warning mr-1"><i class="fas fa-cart-plus" style="font-weight: 900;"></i> Thêm giỏ hàng</button>
+
+                                <!-- <a class="fb-share-button" data-href="{{urlShare}}" data-layout="button_count" data-size="small">
+                                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Chia sẻ</a>
+                                </a> -->
+
+                                <a class="fb-share-button" 
+                                    data-href="{{urlShare}}" 
+                                    data-layout="button_count">
+                                </a>
+                            </a>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Detail -->
+
+    <div class="container mt-3 mb-3">
+        <div class="btn-group shadow-0" role="group">
+            <button (click)="changeStatusInfor('1')" type="button" class="btn btn-light" data-mdb-color="dark">Thông tin</button>
+            <button (click)="changeStatusInfor('2')" type="button" class="btn btn-light" data-mdb-color="dark">Đánh giá ({{comments.length}})</button>
+            <button (click)="changeStatusInfor('3')" type="button" class="btn btn-light" data-mdb-color="dark">Vận chuyển</button>
+        </div>
+    </div>
+
+    <!-- EQ -->
+
+    <div class="mb-3" *ngIf="statusInfor == '1'">
+        <angular-editor ngModel="{{product.description}}" [config]="config"></angular-editor>
+    </div>
+
+    <div *ngIf="product.question_status && statusInfor == '2'" class="container mt-3" style="border-top: solid 1px rgb(240, 240, 240);">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-8">
+                <div class="headings d-flex justify-content-between align-items-center mt-3">
+                    <h6>Câu hỏi: ({{questions.length}})</h6>
+                </div>
+
+                <div *ngFor="let item of questions" class="card-eq p-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="user d-flex flex-row align-items-center"> 
+                            <img src="{{item.avatar}}" width="40" height="40" class="user-img rounded-circle">
+                            <span style="margin-left: 10px;"><small class="font-weight-bold text-primary">{{item.client_name}}: </small> 
+                            <small class="font-weight-bold">{{item.content}}</small>
+                            </span> 
+                        </div> 
+                        <small>{{item.created_at}}</small>
+                    </div>
+
+                    <div *ngIf="admin" class="action d-flex justify-content-between align-items-center">
+                        <div class="reply px-4"><small (click)="deleteQuestion(item.id)">Xóa</small> <span class="dots mr-2 ml-2"></span> <small (click)="changeAcReply(item)">Trả lời</small></div>
+                        <div class="icons align-items-center"><i class="fa fa-check-circle-o check-icon"></i> </div>
+                    </div>
+
+                    <div *ngFor="let r of reply_questions">
+                        <div *ngIf="r.question_id == item.id" class="card-eq p-1 mt-1" style="margin-left: 25px;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="user d-flex flex-row align-items-center"> 
+                                <img src="{{r.avatar}}" width="30" height="30" class="user-img rounded-circle"> 
+                                <span style="margin-left: 10px;"><small class="font-weight-bold text-primary">{{r.client_name}}: </small> 
+                                    <small class="font-weight-bold">{{r.content}}</small>
+                                </span> 
+                                </div> 
+                                <small>{{r.created_at}}</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div *ngIf="questions.length <= 0"><span style="font-size: 12px;">Không có đánh giá nào</span></div>
+
+                <form *ngIf="!admin && login" [formGroup]="addQuestionForm" (submit)="addQuestion()">
+                    <div class="d-flex flex-row add-comment-section mb-4 mt-4" style="clear: both;">
+                        <img class="img-fluid img-responsive rounded-circle mr-2" src="{{myAvatar}}" width="40" height="40">
+                        <input type="text" formControlName="content" required="" class="form-control mr-3" style="margin-left: 10px;" placeholder="Câu hỏi của bạn...">
+                        <button class="btn btn-primary" [disabled]="!addQuestionForm.valid" type="submit" style="width: 180px;">Gửi</button>
+                    </div>
+                </form>
+
+                <form *ngIf="admin && acReply && login" [formGroup]="addReplyQuestionForm" (submit)="addReplyQuestion()">
+                    <div class="d-flex flex-row add-comment-section mb-4 mt-4" style="clear: both;">
+                        <img class="img-fluid img-responsive rounded-circle mr-2" src="{{myAvatar}}" width="40" height="40">
+                        <span style="font-size:15px;">Trả lời cho: <span style="font-weight: 900; font-size: 12px;">{{nameReplyQuestion}}</span></span>
+                        <input type="text" formControlName="content" required="" class="form-control mr-3" style="margin-left: 10px;" placeholder="Câu hỏi của bạn...">
+                        <button class="btn btn-primary" [disabled]="!addReplyQuestionForm.valid" type="submit" style="width: 180px;">Gửi</button>
+                    </div>
+                </form>
+
+                <div *ngIf="!login" class="d-flex flex-row add-comment-section mb-2 mt-2" style="clear: both;">
+                    <span><a routerLink="/login">Đăng nhập</a> đê bắt đầu gửi câu hỏi:</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- EQ -->
+    <!-- Comment -->
+
+    <div *ngIf="product.comment_status && statusInfor == '2'" class="container mt-1 mb-3">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-8">
+                <div class="headings d-flex justify-content-between align-items-center">
+                    <h6>Bình luận: ({{comments.length}})</h6>
+                </div>
+                <div  *ngFor="let item of comments" class="card-eq p-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="user d-flex flex-row align-items-center"> 
+                        <img src="{{item.avatar}}" width="40" height="40" class="user-img rounded-circle">
+                        <span style="margin-left: 10px;"><small class="font-weight-bold text-primary">{{item.client_name}}: </small> 
+                            <small class="font-weight-bold">{{item.content}}</small>
+                        </span> 
+                        </div> 
+                        <small>{{item.created_at}}</small>
+                    </div>
+                    <div class="action d-flex justify-content-between mt-2 align-items-center">
+                        <div *ngIf="admin" class="reply px-4">
+                            <small (click)="deleteComment(item.id)">Xóa</small> <span class="dots mr-2 ml-2"></span> <small (click)="changeAcReplyComment(item)">Trả lời</small>
+                        </div>
+
+                        <div *ngIf="item.rating == 1" class="icons align-items-center">
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div *ngIf="item.rating == 2" class="icons align-items-center">
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div *ngIf="item.rating == 3" class="icons align-items-center">
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div *ngIf="item.rating == 4" class="icons align-items-center">
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div *ngIf="item.rating == 5" class="icons align-items-center">
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                        </div>
+                    </div>
+
+                    <div *ngFor="let c of reply_comments">
+                        <div *ngIf="c.comment_id == item.id" class="card-eq p-1 mt-1" style="margin-left: 25px;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="user d-flex flex-row align-items-center"> 
+                                    <img src="{{c.avatar}}" width="30" height="30" class="user-img rounded-circle"> 
+                                    <span style="margin-left: 10px;"><small class="font-weight-bold text-primary">{{c.client_name}}: </small> 
+                                    <small class="font-weight-bold">{{c.content}}</small>
+                                    </span> 
+                                </div> 
+                                <small>{{c.created_at}}</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div *ngIf="comments.length <= 0"><span style="font-size: 12px;">Không có đánh giá nào</span></div>
+
+                <form *ngIf="login && checkComment" [formGroup]="addCommentForm" (submit)="addComment()">
+                    <div class="container">
+                        <div class="starrating risingstar d-flex  flex-row-reverse" style="float: left; margin-left: 20px;">
+                            <input type="radio" required="" formControlName="rating" id="star5" name="rating" value="5" /><label for="star5" title="5 star"></label>
+                            <input type="radio" required="" formControlName="rating" id="star4" name="rating" value="4" /><label for="star4" title="4 star"></label>
+                            <input type="radio" required="" formControlName="rating" id="star3" name="rating" value="3" /><label for="star3" title="3 star"></label>
+                            <input type="radio" required="" formControlName="rating" id="star2" name="rating" value="2" /><label for="star2" title="2 star"></label>
+                            <input type="radio" required="" formControlName="rating" id="star1" name="rating" value="1" /><label for="star1" title="1 star"></label>
+                        </div>
+                    </div>	
+
+                    <div class="d-flex flex-row add-comment-section mb-4" style="clear: both;">
+                        <img class="img-fluid img-responsive rounded-circle mr-2" src="{{myAvatar}}" width="40" height="40">
+                        <input type="text" formControlName="content" required="" class="form-control mr-3" style="margin-left: 10px;" placeholder="Bình luận của bạn...">
+                        <button class="btn btn-primary" [disabled]="!addCommentForm.valid" type="submit" style="width: 180px;">Đánh giá</button>
+                    </div>
+                </form>
+
+                <form *ngIf="admin && login && acReplyComment" [formGroup]="addReplyCommentForm" (submit)="addReplyComment()">
+                    <div class="d-flex flex-row add-comment-section mb-4 mt-4" style="clear: both;">
+                        <img class="img-fluid img-responsive rounded-circle mr-2" src="{{myAvatar}}" width="40" height="40">
+                        <span style="font-size:15px;">Trả lời cho: <span style="font-weight: 900; font-size: 12px;">{{nameReplyComment}}</span></span>
+                        <input type="text" formControlName="content" required="" class="form-control mr-3" style="margin-left: 10px;" placeholder="Bình luận của bạn...">
+                        <button class="btn btn-primary" [disabled]="!addReplyCommentForm.valid" type="submit" style="width: 180px;">Gửi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    
+    <!-- Comment -->
+
+    <!-- Infomation -->
+    <div class="container mb-3 mt-3" *ngIf="statusInfor == '3'">
+        <div class="mt-3 row">
+            <div class="col-md-6">
+                <img src="../../assets/img/giao_hang.jpg" width="100%" height="" alt="">
+            </div>
+            <div class="col-md-6">
+                <h5>GIAO HÀNG ĐẢM BẢO</h5>
+                <span>
+                    Sau khi quý khách đặt hàng thành công chúng tôi sẽ kiểm tra hàng và gọi
+                    điện thông báo tình trạng sản phẩm và xác nhận đơn hàng, báo phí vận 
+                    chuyển và thời gian giao - nhận hàng cho quý khách cách nhanh nhất.
+                </span>
+                <h5 class="mt-3">NHẬN HÀNG</h5>
+                <span>
+                    <span style="color: rgb(0, 127, 218);">Trả tiền mặt khi nhận hàng:</span> Quý khách sẽ nhận được sản phẩm tại nhà, 
+                    sau khi nhận hàng quý khách sẽ thanh toán cho nhân viên giao hàng.
+                </span>
+            </div>
+        </div>
+        <div class="container ship mb-1">
+            <img src="../../assets/img/ship.png" width="100%" alt="">
+        </div>
+    </div>
+    <!-- Infomation -->    
+
+    <app-client-product *ngIf="product.category_id" [title]="sameKind" [categoris]="categoris" [categoryId]="product.category_id"></app-client-product>
+
+</div>

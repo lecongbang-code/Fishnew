@@ -1,0 +1,86 @@
+@media (max-width: 1820px) {
+    .card-body .picsum-img-wrapper img {
+      height: 450px;
+    }
+}
+
+@media (max-width: 1620px) {
+    .card-body .picsum-img-wrapper img {
+      height: 400px;
+    }
+}
+
+@media (max-width: 991px) {
+    .card-body .picsum-img-wrapper img {
+      height: 350px;
+    }
+}
+
+@media (max-width: 800px) {
+    .card-body .picsum-img-wrapper img {
+      height: 300px;
+    }
+}
+
+@media (max-width: 600px) {
+    .card-body .picsum-img-wrapper img {
+      height: 250px;
+    }
+}
+.item-price{
+  text-align: center;
+  color: rgb(101, 128, 250);
+  text-shadow: 1px 1px rgb(0, 102, 255);
+  font-size: 19px; 
+  font-weight: 900;
+  margin-bottom: 5px;
+}
+
+.item-price-sale{
+  margin-bottom: 0px; 
+  font-size: 12px;
+}
+
+.card-text-sale{
+  margin-left: 5px;
+  font-size: 14px;
+  font-weight: 800;
+  color: red;
+}
+
+.card-title .text-title{
+  font-weight: 800;
+  font-size: 13px;
+  color: rgb(82, 82, 82);
+}
+
+.imange-product-card
+{
+    position: relative;
+    max-height: 170px;
+    min-height: 170px;
+
+}
+
+.imange-product-card img
+{
+    min-height: 160px;
+    max-height: 160px;
+    object-fit: cover;
+}
+
+.discount
+{
+    position: absolute;
+    top: 8px;
+    left: 0px;
+    border-radius: 0px 0px 4px 0px;
+    background-color: rgb(255, 255, 255);
+}
+
+.discount span
+{
+    color: rgb(139, 139, 139);
+    font-weight: 600;
+    padding: 5px;
+}

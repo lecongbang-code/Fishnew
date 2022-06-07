@@ -1,0 +1,171 @@
+<div class="hold-transition login-page">
+    <div class="login-box">
+      <div class="login-logo">
+        <a routerLink="../home"><b>FISH </b>NEW</a>
+      </div>
+      <div *ngIf="register == 1" class="card">
+        <div class="card-body login-card-body">
+          <div style="text-align: center; margin-bottom: 10px;"><h4>Đăng nhập</h4></div>
+          <form [formGroup]="loginForm" (submit)="submitLogin(loginForm.value)">
+            <div class="input-group mb-3">
+              <input type="text" required="" formControlName="username" class="form-control" placeholder="Tài khoản">
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fa-solid fa-user"></span>
+                </div>
+              </div>
+            </div>
+            <div class="input-group mb-2">
+              <input type="{{showTextPass}}" required="" formControlName="password" class="form-control" placeholder="Mật khẩu">
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-lock" (click)="changeShowPass()"></span>
+                </div>
+              </div>
+            </div>
+
+            <div style="text-align: right;" class="mt-0 mb-2">
+              <span style="cursor: pointer; text-decoration: underline; color: rgb(15, 111, 255);" (click)="changelogin(3)">Quên mật khẩu?</span>
+            </div>
+
+            <ngx-recaptcha2 #captchaElem
+              required=""
+              [siteKey]="siteKey"
+              formControlName="recaptcha">
+            </ngx-recaptcha2>
+
+            <div class="row mt-2 mb-3">
+              <div class="">
+                <button type="submit" [disabled]="!loginForm.valid" class="btn btn-primary btn-block">Đăng nhập</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="input-group mb-1">
+            <div class="input-group-append">
+                <span>Bạn chưa có tài khoản đăng ký <a style="cursor: pointer; text-decoration: underline; color: rgb(89, 136, 255);" (click)="changelogin(2)">tại đây</a></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div *ngIf="register == 3" class="card">
+        <div class="card-body login-card-body">
+          <div style="text-align: center; margin-bottom: 10px;"><h4>Quên mật khẩu</h4></div>
+          <form [formGroup]="forgotForm" (submit)="submitForgot(forgotForm.value)">
+            <div class="input-group mb-3">
+              <input type="text" required="" formControlName="username" class="form-control" placeholder="Tài khoản">
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fa-solid fa-user"></span>
+                </div>
+              </div>
+            </div>
+            <div class="input-group mb-2">
+              <input type="text" required="" formControlName="email" class="form-control" placeholder="Email">
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <i class="fa-solid fa-envelope"></i>
+                </div>
+              </div>
+            </div>
+
+            <div style="text-align: right;" class="mt-0 mb-2">
+              <span style="cursor: pointer; text-decoration: underline; color: rgb(15, 111, 255);" (click)="changelogin(1)">Đăng nhập</span>
+            </div>
+
+            <ngx-recaptcha2 #captchaElem
+              required=""
+              [siteKey]="siteKey"
+              formControlName="recaptcha">
+            </ngx-recaptcha2>
+
+            <div class="row mt-2 mb-3">
+              <div class="">
+                <button type="submit" [disabled]="!forgotForm.valid" class="btn btn-primary btn-block">Gửi</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="input-group mb-1">
+            <div class="input-group-append">
+                <span>Bạn chưa có tài khoản đăng ký <a style="cursor: pointer; text-decoration: underline; color: rgb(89, 136, 255);" (click)="changelogin(2)">tại đây</a></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div *ngIf="register == 2" class="card">
+        <div class="card-body login-card-body">
+          <div style="text-align: center; margin-bottom: 10px;"><h4>Đăng ký</h4></div>
+          <form [formGroup]="registerForm" (submit)="submitRegister(registerForm.value)">
+            <div class="input-group mb-3">
+              <input type="text" required="" formControlName="name" class="form-control" placeholder="Tên (ít nhất 6 ký tự)">
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <i *ngIf="registerForm.value.name.length < 6 && registerForm.value.name != ''" style="color: rgb(249, 108, 108);" class="fa-solid fa-circle-xmark mr-1 ml-1"></i>
+                  <i *ngIf="registerForm.value.name.length >= 6" style="color: rgb(72, 255, 72);" class="fa-solid fa-check mr-1 ml-1"></i>
+                  <span class="fa-solid fa-user-tag"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="input-group mb-3">
+              <input type="text" required="" formControlName="username" class="form-control" placeholder="Tài khoản (ít nhất 6 ký tự)">
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <i *ngIf="registerForm.value.username.length < 6 && registerForm.value.username != ''" style="color: rgb(249, 108, 108);" class="fa-solid fa-circle-xmark mr-1 ml-1"></i>
+                  <i *ngIf="registerForm.value.username.length >= 6" style="color: rgb(72, 255, 72);" class="fa-solid fa-check mr-1 ml-1"></i>
+                  <span class="fa-solid fa-user"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="input-group mb-3">
+              <input type="{{showTextPass}}" required="" formControlName="password" class="form-control" placeholder="Mật khẩu (ít nhất 6 ký tự)">
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <i *ngIf="registerForm.value.password.length < 6 && registerForm.value.password != ''" style="color: rgb(249, 108, 108);" class="fa-solid fa-circle-xmark mr-1 ml-1"></i>
+                  <i *ngIf="registerForm.value.password.length >= 6" style="color: rgb(72, 255, 72);" class="fa-solid fa-check mr-1 ml-1"></i>
+                  <span class="fas fa-lock" (click)="changeShowPass()"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="input-group mb-3">
+              <input type="{{showTextPass}}" required="" formControlName="confirm_password" class="form-control" placeholder="Xác nhận mật khẩu">
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <i *ngIf="registerForm.value.password != registerForm.value.confirm_password" style="color: rgb(249, 108, 108);" class="fa-solid fa-circle-xmark mr-1 ml-1"></i>
+                  <i *ngIf="registerForm.value.password == registerForm.value.confirm_password && registerForm.value.confirm_password != ''" style="color: rgb(72, 255, 72);" class="fa-solid fa-check mr-1 ml-1"></i>
+                  <span class="fas fa-lock" (click)="changeShowPass()"></span>
+                </div>
+              </div>
+            </div>
+
+            <ngx-recaptcha2 #captchaElem
+              required=""
+              [siteKey]="siteKey"
+              formControlName="recaptcha">
+            </ngx-recaptcha2>
+
+            <div class="row mt-2 mb-3">
+              <div class="">
+                <button type="submit" [disabled]="!registerForm.valid" class="btn btn-primary btn-block">Đăng ký</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="input-group mb-1">
+            <div class="input-group-append">
+                <span>Bạn đã có tài khoản đăng nhập <a style="cursor: pointer; text-decoration: underline; color: rgb(89, 136, 255);" (click)="changelogin(1)">tại đây</a></span>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+    </div>
+</div>

@@ -1,0 +1,209 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Màu sắc</h1>
+            <div class="margin mt-3">
+              <div class="btn-group">
+                <button type="button" class="btn btn-default">Tất cả</button>
+                <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu" role="menu">
+                  <a class="dropdown-item" (click)="changeSelectStatus('')">Tất cả</a>
+                  <a class="dropdown-item" (click)="changeSelectStatus('1')">Hoạt động</a>
+                  <a class="dropdown-item" (click)="changeSelectStatus('0')">Dừng</a>
+                </div>
+              </div>
+            </div>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a routerLink="../">Admin</a></li>
+              <li class="breadcrumb-item active">Màu sắc</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- Left col -->
+            <div class="col-md-8">
+              <!-- TABLE: LATEST ORDERS -->
+              <div class="card">
+                <div class="card-header border-transparent">
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                  <div class="navbar-dark">
+                    <form class="form-inline">
+                        <div class="input-group input-group-sm">
+                          <input (ngModel)="find_text" name="find_text" (ngModelChange)="find_text_filter_control.next($event)" class="form-control form-control-navbar" type="search" placeholder="Tìm kiếm màu sắc" aria-label="Search">
+                          <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                              <i class="fas fa-search"></i>
+                            </button>
+                          </div>
+                        </div>
+                    </form>
+                </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table class="table m-0">
+                      <thead>
+                      <tr>
+                        <th>STT</th>
+                        <th>Mã</th>
+                        <th colspan="2">Màu sắc</th>
+                        <th>Mã màu</th>
+                        <th>Ngày tạo</th>
+                        <th>Trạng thái</th>
+                        <th colspan="2">Thao tác</th>
+                      </tr>
+                      </thead>
+                      <tbody *ngFor="let item of listColor | paginate: { itemsPerPage: 15, currentPage: page, totalItems: totalLength }; let i = index">
+                      <tr class="list">
+                        <td>{{i+1}}</td>
+                        <td>{{item.id}}</td>
+                        <td style="text-align: right;">
+                            <div [style.background]="item.color_code" style="width: 40px; height: 40px;"></div>
+                          </td>
+                        <td><div style="width: 80px;">{{item.name}}</div></td>
+                        <td><div style="width: 80px;">{{item.color_code}}</div></td>
+                        <td><div style="width: 100px;">{{item.created_at | date:'yyyy-MM-dd'}}</div></td>
+                        <td *ngIf="item.status == true"><div style="width: 100px;"><span class="badge badge-success">Hoạt động</span></div></td>
+                        <td *ngIf="item.status == false"><div style="width: 100px;"><span class="badge badge-warning">Dừng</span></div></td>
+                        <td style="text-align: right;">
+                            <div style="width: 80px;"><a (click)="getColorId(item.id)" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Sửa</a></div>
+                        </td>
+                        <td>
+                            <div style="width: 80px;"><a (click)="deleteConfirmed(item.id)" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a></div>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.table-responsive -->
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                  <pagination-controls previousLabel="" nextLabel="" (pageChange)="page = $event"></pagination-controls>
+                </div>
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-4">
+              <!-- PRODUCT LIST -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Thêm màu sắc</h3>
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                  <form id="addColor" [formGroup]="addColorForm" (submit)="addColor()">
+                    <ul class="products-list product-list-in-card pl-2 pr-2">
+                      <div class="form-group">
+                          <label class="col-form-label" for="inputSuccess">Tên Màu sắc</label>
+                          <input type="text" formControlName="name" required class="form-control" id="inputSuccess" placeholder="Nhập tên màu sắc">
+                      </div>
+                      <div class="form-group">
+                        <label class="col-form-label" >Mã Màu sắc</label>
+                        <input type="text" class="form-control" [(colorPicker)]="color1" [value]="color1" placeholder="Nhập tên mã màu sắc"/>
+                    </div>
+                      <div class="form-group">
+                          <label class="col-form-label">Ngày tạo</label>
+                          <input type="text" class="form-control disabled" disabled placeholder="{{currentDate | date:'yyyy-MM-dd'}}">
+                      </div>
+                      <div class="form-group">
+                          <label class="col-form-label">Trạng thái</label>
+                          <div class="custom-control custom-switch">
+                              <input type="checkbox" formControlName="status" class="custom-control-input" id="statusAdd">
+                              <label class="custom-control-label" for="statusAdd">Hoạt động</label>
+                          </div>
+                      </div>
+                    </ul>
+                  </form>
+                </div>
+                  <!-- /.card-body -->
+                <div class="card-footer text-center">
+                  <button type="submit" form="addColor" [disabled]="!addColorForm.valid"class="btn btn-info"><i class="fa-solid fa-plus"></i> Thêm</button>
+                </div>
+              </div>
+              <!-- /.card -->
+
+              <div *ngIf="acEdit" class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Cập nhật màu sắc - (#{{color[0].id}})</h3>
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                  <form id="editColor" [formGroup]="editColorForm" (submit)="editColor()">
+                    <ul class="products-list product-list-in-card pl-2 pr-2">
+                      <div class="form-group">
+                          <label class="col-form-label" for="inputSuccess">Tên Màu sắc</label>
+                          <input type="text" formControlName="name" required class="form-control" id="inputSuccess" placeholder="Nhập tên màu sắc">
+                      </div>
+                      <div class="form-group">
+                        <label class="col-form-label" for="inputSuccess">Mã Màu sắc</label>
+                        <input type="text" class="form-control" [(colorPicker)]="color2" [value]="color2" placeholder="Nhập tên mã màu sắc"/>
+                    </div>
+                      <div class="form-group">
+                          <label class="col-form-label">Ngày tạo</label>
+                          <input type="text" class="form-control disabled" disabled placeholder="{{currentDate | date:'yyyy-MM-dd'}}">
+                      </div>
+                      <div class="form-group">
+                          <label class="col-form-label">Trạng thái</label>
+                          <div class="custom-control custom-switch">
+                              <input type="checkbox" formControlName="status" class="custom-control-input" id="statusEdit">
+                              <label class="custom-control-label" for="statusEdit">Hoạt động</label>
+                          </div>
+                      </div>
+                    </ul>
+                  </form>
+                </div>
+                  <!-- /.card-body -->
+                  <div class="card-footer text-center">
+                    <button form="editColor" [disabled]="!editColorForm.valid" type="submit" class="btn btn-success mr-1"><i class="fa-solid fa-floppy-disk"></i> Lưu</button>
+                    <button form="editColor" (click)="setAcEdit(false)" class="btn btn-secondary"><i class="fa-solid fa-rotate-left"></i> Hủy</button>
+                </div>
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </div>
+    </section>
+</div>

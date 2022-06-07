@@ -1,0 +1,114 @@
+<div class="content-wrapper">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Đơn hàng</h1>
+            <div class="margin mt-3">
+              <div class="btn-group">
+                <button type="button" class="btn btn-default">Tất cả</button>
+                <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+
+                <div class="dropdown-menu" role="menu">
+                  <a class="dropdown-item" (click)="changeSelectStatus('')">Tất cả</a>
+                  <a class="dropdown-item" (click)="changeSelectStatus('Đang chờ')">Đang chờ</a>
+                  <a class="dropdown-item" (click)="changeSelectStatus('Đang lấy hàng')">Đang lấy hàng</a>
+                  <a class="dropdown-item" (click)="changeSelectStatus('Đang giao')">Đang giao</a>
+                  <a class="dropdown-item" (click)="changeSelectStatus('Đã nhận')">Đã nhận</a>
+                  <a class="dropdown-item" (click)="changeSelectStatus('Đã hủy')">Đã hủy</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a routerLink="../">Admin</a></li>
+              <li class="breadcrumb-item active">Đơn hàng</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+            <div class="card">
+                <div class="card-header border-transparent">
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="navbar-dark">
+                  <form class="form-inline">
+                    <div class="input-group input-group-sm">
+                      <input (ngModel)="find_text" name="find_text" (ngModelChange)="find_text_filter_control.next($event)" class="form-control form-control-navbar" type="search" placeholder="Tìm kiếm thể loại" aria-label="Search">
+                      <div class="input-group-append">
+                        <button class="btn btn-navbar" type="submit">
+                          <i class="fas fa-search"></i>
+                        </button>
+                      </div>
+                    </div>
+                </form>
+              </div>
+                </div>
+                <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table m-0">
+                      <thead>
+                      <tr>
+                          <th>STT</th>
+                          <th>Mã</th>
+                          <th>Tên khách</th>
+                          <th>SĐT</th>
+                          <th>Địa chỉ</th>
+                          <th>Tên đơn</th>
+                          <th>Đơn giá</th>
+                          <th>Ngày đặt</th>
+                          <th>Trạng thái</th>
+                      </tr>
+                      </thead>
+                      <tbody *ngFor="let item of listOrder | paginate: { itemsPerPage: 50, currentPage: page, totalItems: totalLength }; let i = index">
+                          <tr class="list-order">
+                              <td>{{i + 1}}</td>
+                              <td><a [routerLink]="['order-detail', item.id]">#{{item.id}}</a></td>
+                              <td><div style="width: 150px;">{{item.client_name}}</div></td>
+                              <td><div style="width: 100px;">{{item.client_phone}}</div></td>
+                              <td><div style="width: 300px;">{{item.client_address}}</div></td>
+                              <td>
+                                <div style="width: 280px;">
+                                <a [routerLink]="['order-detail', item.id]">
+                                  {{(item.order_name.length>30)? (item.order_name | slice:0:30)+'...':(item.order_name)}}
+                                </a>
+                                </div>
+                              </td>
+                              <td><div style="width: 150px;">
+                                {{formatCash(item.order_total_price)}} VNĐ
+                              </div></td>
+                              <td><div style="width: 150px;">{{item.created_at | date:'yyyy-MM-dd'}}</div></td>
+                              <td *ngIf="item.status == 'Đang chờ'" ><div style="width: 100px;"><span class="badge badge-warning">{{item.status}}</span></div></td>
+                              <td *ngIf="item.status == 'Đang lấy hàng'"><div style="width: 100px;"><span class="badge badge-secondary">{{item.status}}</span></div></td>
+                              <td *ngIf="item.status == 'Đang giao'"><div style="width: 100px;"><span class="badge badge-info">{{item.status}}</span></div></td>
+                              <td *ngIf="item.status == 'Đã nhận'"><div style="width: 100px;"><span class="badge badge-success">{{item.status}}</span></div></td>
+                              <td *ngIf="item.status == 'Đã hủy'"><div style="width: 100px;"><span class="badge badge-danger">{{item.status}}</span></div></td>
+                          </tr>
+                      </tbody>
+                    </table>
+                </div>
+                </div>
+                <div class="card-footer clearfix">
+                  <pagination-controls previousLabel="" nextLabel="" (pageChange)="page = $event"></pagination-controls>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </section>
+</div>

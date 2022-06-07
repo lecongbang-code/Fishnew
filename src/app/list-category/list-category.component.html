@@ -1,0 +1,189 @@
+<div class="content-wrapper">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Thể loại</h1>
+            <div class="margin mt-3">
+              <div class="btn-group">
+                <button type="button" class="btn btn-default">Tất cả</button>
+                <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu" role="menu">
+                  <a class="dropdown-item" (click)="changeSelectStatus('')">Tất cả</a>
+                  <a class="dropdown-item" (click)="changeSelectStatus('1')">Hoạt động</a>
+                  <a class="dropdown-item" (click)="changeSelectStatus('0')">Dừng</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a routerLink="../">Admin</a></li>
+              <li class="breadcrumb-item active">Thể loại</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-header border-transparent">
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                  <div class="navbar-dark">
+                    <form class="form-inline">
+                        <div class="input-group input-group-sm">
+                          <input (ngModel)="find_text" name="find_text" (ngModelChange)="find_text_filter_control.next($event)" class="form-control form-control-navbar" type="search" placeholder="Tìm kiếm thể loại" aria-label="Search">
+                          <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                              <i class="fas fa-search"></i>
+                            </button>
+                          </div>
+                        </div>
+                    </form>
+                </div>
+                </div>
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table class="table m-0">
+                      <thead>
+                      <tr>
+                        <th>STT</th>
+                        <th>Mã</th>
+                        <th colspan="2">Thể loại</th>
+                        <th>Ngày tạo</th>
+                        <th>Trạng thái</th>
+                        <th colspan="2">Thao tác</th>
+                      </tr>
+                      </thead>
+                      <tbody *ngFor="let item of listCategory | paginate: { itemsPerPage: 15, currentPage: page, totalItems: totalLength }; let i = index">
+                        <tr class="list">
+                          <td>{{i + 1}}</td>
+                          <td>#{{item.id}}</td>
+                          <td>
+                            <a><img width="100" height="60" src={{item.image_path}} alt=""></a>
+                          </td>
+                          <td><div style="width: 300px;"><a>{{item.name}}</a></div></td>
+                          <td><div style="width: 100px;">{{item.created_at | date:'yyyy-MM-dd'}}</div></td>
+                          <td *ngIf="item.status == true"><div style="width: 100px;"><span class="badge badge-success">Hoạt động</span></div></td>
+                          <td *ngIf="item.status == false"><div style="width: 100px;"><span class="badge badge-warning">Dừng</span></div></td>
+                          <td style="text-align: right;">
+                              <div style="width: 80px;"><a (click)="getCategoryId(item.id)" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Sửa</a></div>
+                          </td>
+                          <td>
+                              <div style="width: 80px;"><a (click)="deleteConfirmed(item.id)" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Xóa</a></div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="card-footer clearfix">
+                  <pagination-controls previousLabel="" nextLabel="" (pageChange)="page = $event"></pagination-controls>
+              </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Thêm thể loại</h3>
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+                
+                  <div class="card-body p-0">
+                    <form id="addCategory" [formGroup]="addCategoryForm" (submit)="addCategory()">
+                      <ul class="products-list product-list-in-card pl-2 pr-2">
+                        <div class="form-group">
+                            <label class="col-form-label" for="inputName">Tên thể loại</label>
+                            <input type="text" formControlName="name" class="form-control" required id="inputName" placeholder="Nhập tên thể loại">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="inputUrl">Đường dẫn ảnh</label>
+                            <input type="text" formControlName="image_path" class="form-control" required id="inputUrl" placeholder="Url ảnh">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Ngày tạo</label>
+                            <input type="text" class="form-control" disabled placeholder="Hôm nay: {{currentDate | date:'yyyy-MM-dd'}}">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Trạng thái</label>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" formControlName="status" class="custom-control-input" id="status">
+                                <label class="custom-control-label" for="status">Hoạt động</label>
+                            </div>
+                        </div>
+                      </ul>
+                    </form>
+                  </div>
+                  <div class="card-footer text-center">
+                      <button form="addCategory" [disabled]="!addCategoryForm.valid" type="submit" class="btn btn-info"><i class="fa-solid fa-plus"></i> Thêm</button>
+                  </div>
+              </div>
+
+              <div *ngIf="acEdit" class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Cập nhật thể loại - (#{{category[0].id}})</h3>
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+                
+                  <div class="card-body p-0">
+                    <form id="editCategory" [formGroup]="editCategoryForm" (submit)="editCategory()">
+                      <ul class="products-list product-list-in-card pl-2 pr-2">
+                        <div class="form-group">
+                            <label class="col-form-label" for="inputName">Tên thể loại</label>
+                            <input type="text"  formControlName="name" class="form-control" required placeholder="Nhập tên thể loại">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="inputUrl">Đường dẫn ảnh</label>
+                            <input type="text"  formControlName="image_path" class="form-control" required placeholder="Url ảnh">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Ngày tạo</label>
+                            <input type="text" class="form-control" disabled placeholder="Ngày: {{category[0].created_at | date:'yyyy-MM-dd'}}">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Trạng thái</label>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" formControlName="status" class="custom-control-input" id="statusEdit">
+                                <label class="custom-control-label" for="statusEdit">Hoạt động</label>
+                            </div>
+                        </div>
+                      </ul>
+                    </form>
+                  </div>
+                  <div class="card-footer text-center">
+                      <button form="editCategory" [disabled]="!editCategoryForm.valid" type="submit" class="btn btn-success mr-1"><i class="fa-solid fa-floppy-disk"></i> Lưu</button>
+                      <button form="editCategory" (click)="setAcEdit(false)" class="btn btn-secondary"><i class="fa-solid fa-rotate-left"></i> Hủy</button>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,99 @@
+<div class="hold-transition login-page">
+
+    <div>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5981944031527063"
+     crossorigin="anonymous"></script>
+<!-- ads create text -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5981944031527063"
+     data-ad-slot="3490149646"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+    </div>
+    
+    <div class="login-box">
+      <div class="login-logo">
+        <a routerLink="../home"><b>FISH </b>NEW</a>
+      </div>
+      <div class="card">
+        <div class="card-body login-card-body">
+          <div style="text-align: center; margin-bottom: 10px;"><h4>TẠO VĂN BẢN</h4></div>
+          <form [formGroup]="createTextForm" (submit)="submitCreateText(createTextForm.value)">
+            <div class="input-group mb-3">
+              <input type="text" required="" (ngModelChange)="changeTestValue()" formControlName="text" class="form-control" placeholder="Nội dung văn bản">
+              <div class="input-group-append">
+                <div class="input-group-text">
+                    <i *ngIf="createTextForm.value.text == ''" style="color: rgb(249, 108, 108);" class="fa-solid fa-circle-xmark mr-1 ml-1"></i>
+                    <i *ngIf="createTextForm.value.text != ''" style="color: rgb(72, 255, 72);" class="fa-solid fa-check mr-1 ml-1"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="input-group mb-3">
+                <input type="text" (ngModelChange)="changeTestValue()" formControlName="space" class="form-control" placeholder="Liên kết số và nội dung">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                      <i style="color: rgb(72, 255, 72);" class="fa-solid fa-check mr-1 ml-1"></i>
+                  </div>
+                </div>
+              </div>
+
+            <div class="row mb-3">
+                <div class="col-6">
+                    <div class="input-group">
+                        <input type="number" required="" (ngModelChange)="changeTestValue()" formControlName="numberStart" class="form-control" placeholder="Bắt đầu từ">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <i *ngIf="createTextForm.value.numberStart == ''" style="color: rgb(249, 108, 108);" class="fa-solid fa-circle-xmark mr-1 ml-1"></i>
+                                <i *ngIf="createTextForm.value.numberStart != ''" style="color: rgb(72, 255, 72);" class="fa-solid fa-check mr-1 ml-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-6">
+                    <div class="input-group">
+                        <input type="number" required="" (ngModelChange)="changeTestValue()" formControlName="numberEnd" class="form-control" placeholder="Kết thúc tại">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <i *ngIf="createTextForm.value.numberEnd == ''" style="color: rgb(249, 108, 108);" class="fa-solid fa-circle-xmark mr-1 ml-1"></i>
+                                <i *ngIf="createTextForm.value.numberEnd != ''" style="color: rgb(72, 255, 72);" class="fa-solid fa-check mr-1 ml-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <label for="">Mẫu</label>
+            <div class="input-group mb-0">
+                <input type="text" disabled class="form-control" placeholder="{{testValue}}">
+            </div>
+            <div style="text-align: center;"><span>...</span></div>
+            <div class="input-group mb-3 mt-2">
+                <input type="text" disabled class="form-control" placeholder="{{testValue1}}">
+            </div>
+
+            <div class="row mt-2 mb-3">
+              <div class="">
+                <button type="submit" [disabled]="!createTextForm.valid" class="btn btn-primary mr-2">TẠO</button>
+                <button type="button" *ngIf="createTextForm.valid" (click)="resetcreateTextForm();" class="btn btn-secondary">Làm sạch</button>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+        <div *ngIf="content" class="mt-3">
+            <div style="text-align: right;">
+                <button class="btn btn-outline-info btn-sm" [cdkCopyToClipboard]="contentCopy"><i class="fa-solid fa-copy"></i> Coppy</button>
+            </div>
+            <angular-editor ngModel="{{content}}" [config]="config"></angular-editor>
+        </div>
+
+    </div>
+</div>

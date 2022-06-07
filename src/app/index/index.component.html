@@ -1,0 +1,25 @@
+<div class="wrapper">
+    <app-client-header [categoris]="categoris"></app-client-header>
+  
+    <app-client-sidebar [categoris]="categoris"></app-client-sidebar>
+  
+    <div class="content-wrapper" style="background-color: white;">
+      <section class="content pt-3">
+        <div class="container-fluid">
+            
+          <router-outlet (activate)="onActivate()"></router-outlet>
+
+          <app-client-product [title]="newProduct" [categoris]="categoris"></app-client-product>
+  
+          <app-client-product [title]="randomProduct" [categoris]="categoris"></app-client-product>
+
+          <app-client-product *ngFor="let item of categoris" [title]="item.name" [categoris]="categoris" [categoryId]="item.id"></app-client-product>
+  
+          <app-client-slider id="slider" [categoris]="categoris"></app-client-slider>
+  
+          <app-client-footer [categoris]="categoris" [footer]="footer"></app-client-footer>
+  
+        </div>
+      </section>
+    </div>
+</div>

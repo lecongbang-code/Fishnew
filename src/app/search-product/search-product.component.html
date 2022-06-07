@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-md-12 pr-2">
+      <div style="background-color: white;" class="card">
+        <div class="card-header">
+          <h5 style="color: black; text-transform: uppercase;" class="card-title"><span>(Tìm kiếm cho) - </span> "{{find_text}}"</h5>
+          <div style="float: right;" class="navbart">
+            <form class="form-inline">
+                <div class="input-group">
+                  <input (ngModel)="find_text" name="find_text" (ngModelChange)="find_text_filter_control.next($event)" class="form-control form-control-navbar" type="search" placeholder="Tìm kiếm sản phẩm" aria-label="Search">
+                </div>
+            </form>
+        </div>
+        </div>
+          <div class="row">
+            <div *ngFor="let item of products | paginate: { itemsPerPage: 18, currentPage: page, totalItems: totalLength }; let i = index"
+              class="card mb-1 col-sm-2 col-6" style="background-color: white;">
+              <div class="imange-product-card">
+                <img style="cursor: pointer;" (click)="onActivate()" (click)="changeNameProduct(item)" class="card-img-top mt-2" src="{{item.image_path_1}}" alt="{{item.name}}">
+                <div class="discount" *ngFor="let c of categoris" ><span *ngIf="item.category_id == c.id">{{c.name}}</span></div>
+              </div>
+              <div style="color: black;" class="card-body p-2">
+                <h5 style="cursor: pointer;" (click)="onActivate()" (click)="changeNameProduct(item)" class="card-title"><span class="text-title">
+                  {{ (item.name.length>20)? (item.name | slice:0:20)+'...':(item.name) }}
+                </span></h5>
+                <p class="card-text item-price-sale"><del>{{formatCash(item.old_price.toString())}} VNĐ</del> <span class="card-text-sale">(Giảm {{item.discount}}%)</span></p>
+                <p class="card-text item-price">{{formatCash(item.new_price.toString())}} VNĐ</p>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="products.length <= 0" class="mb-3 mt-3 ml-3">
+            <span>Sản phẩm cho "{{find_text}}" không được tìm thấy.</span>
+        </div>
+        <div class="card-footer">
+          <div class="row">
+            <pagination-controls style="margin-bottom: 0rem;" previousLabel="" nextLabel="" (pageChange)="page = $event"></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,57 @@
+.item-price{
+    text-align: center;
+    color: rgb(101, 128, 250);
+    text-shadow: 1px 1px rgb(0, 102, 255);
+    font-size: 18px; 
+    font-weight: 900;
+    margin-bottom: 5px;
+}
+
+.item-price-sale{
+    margin-bottom: 0px; 
+    font-size: 12px;
+}
+
+.card-text-sale{
+    margin-left: 5px;
+    font-size: 12px;
+    font-weight: 900;
+    color: red;
+}
+
+.card-title .text-title{
+    font-weight: 800;
+    font-size: 14px;
+    color: rgb(82, 82, 82);
+}
+
+.imange-product-card
+{
+    position: relative;
+    max-height: 160px;
+    min-height: 160px;
+
+}
+
+.imange-product-card img
+{
+    min-height: 150px;
+    max-height: 150px;
+    object-fit: cover;
+}
+
+.discount
+{
+    position: absolute;
+    top: 8px;
+    left: 0px;
+    border-radius: 0px 0px 4px 0px;
+    background-color: rgb(255, 255, 255);
+}
+
+.discount span
+{
+    color: rgb(139, 139, 139);
+    font-weight: 600;
+    padding: 5px;
+}

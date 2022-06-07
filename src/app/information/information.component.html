@@ -1,0 +1,167 @@
+<div class="">
+    <ul class="nav nav-tabs mb-3">
+      <li class="nav-item">
+        <button class="nav-link active" [routerLink]="['/information']" routerLinkActive="router-link-active" >
+            <h6>Hồ sơ của tôi</h6>
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" [routerLink]="['/order']" routerLinkActive="router-link-active" >
+            <h6>Đơn hàng</h6>
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" [routerLink]="['/cart']" routerLinkActive="router-link-active" >
+            <h6>Giỏ hàng</h6>
+        </button>
+      </li>
+    </ul>
+    <div class="tab-content">
+        
+        <section class="content">
+            <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    
+                    <div class="card card-warning">
+                        <div class="card-header">
+                        <h3 class="card-title">Cập nhật thông tin <span (click)="showChangePass(true)" style="cursor: pointer; font-size: 14px; color: rgb(0, 75, 126); font-weight: 900; text-decoration: underline;">Đổi mật khẩu?</span></h3>
+            
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        </div>
+                        <div class="card-body p-0" *ngIf="!acChangePass">
+                            <div class="card card-warning mb-0">
+                                <div class="card-body">
+                                <form [formGroup]="editClientForm" (submit)="submitEditClient()">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <label>Tài khoản (id)</label>
+                                            <div class="input-group mb-3">
+                                                <input type="text" required="" value="{{editClientForm.value.id}}" disabled class="form-control" placeholder="Tên (ít nhất 6 ký tự)">
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text">
+                                                        <span class="fa-solid fa-user"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>Tên</label>
+                                                <input type="text" required="" formControlName="name" class="form-control" placeholder="Tên khách hàng">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>SĐT</label>
+                                            <input type="text" required="" formControlName="phone" class="form-control" placeholder="Nhập số điện thoại">
+                                        </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="email" required="" formControlName="email" class="form-control" placeholder="Nhập email">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                            <label>Địa chỉ</label>
+                                            <input type="text" required="" formControlName="address" class="form-control" placeholder="Nhập địa chỉ">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <button type="submit" [disabled]="!editClientForm.valid" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Cập nhật</button>
+                                    </div>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-0" *ngIf="acChangePass">
+                            <div class="card card-warning mb-0">
+                                <div class="card-body">
+                                <form [formGroup]="editClientPassForm" (submit)="submitEditClientPass()">
+                                    <div class="row">
+     
+                                        <div class="col-sm-3">
+                                            <label>Tài khoản (id)</label>
+                                            <div class="input-group mb-3">
+                                                <input type="text" required="" value="{{editClientForm.value.id}}" disabled class="form-control" placeholder="Tên (ít nhất 6 ký tự)">
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text">
+                                                        <span class="fa-solid fa-user"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <label>Mật khẩu hiện tại</label>
+                                            <div class="input-group mb-3">
+                                                <input type="{{showTextPass}}" required="" formControlName="password" class="form-control" placeholder="Mật khẩu (ít nhất 6 ký tự)">
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text">
+                                                        <i *ngIf="editClientPassForm.value.password.length < 6 && editClientPassForm.value.name != ''" style="color: rgb(249, 108, 108);" class="fa-solid fa-circle-xmark mr-1 ml-1"></i>
+                                                        <i *ngIf="editClientPassForm.value.password.length >= 6" style="color: rgb(72, 255, 72);" class="fa-solid fa-check mr-1 ml-1"></i>
+                                                        <span class="fas fa-lock" (click)="changeShowPass()"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <label>Mật khẩu mới</label>
+                                            <div class="input-group mb-3">
+                                                <input type="{{showTextPass}}" required="" formControlName="new_password" class="form-control" placeholder="Mật khẩu (ít nhất 6 ký tự)">
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text">
+                                                        <i *ngIf="editClientPassForm.value.new_password.length < 6 && editClientPassForm.value.name != ''" style="color: rgb(249, 108, 108);" class="fa-solid fa-circle-xmark mr-1 ml-1"></i>
+                                                        <i *ngIf="editClientPassForm.value.new_password.length >= 6" style="color: rgb(72, 255, 72);" class="fa-solid fa-check mr-1 ml-1"></i>
+                                                        <span class="fas fa-lock" (click)="changeShowPass()"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <label>Xác nhận mật khẩu</label>
+                                            <div class="input-group mb-3">
+                                                <input type="{{showTextPass}}" required="" formControlName="r_password" class="form-control" placeholder="Mật khẩu (ít nhất 6 ký tự)">
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text">
+                                                        <i *ngIf="editClientPassForm.value.r_password != editClientPassForm.value.new_password" style="color: rgb(249, 108, 108);" class="fa-solid fa-circle-xmark mr-1 ml-1"></i>
+                                                        <i *ngIf="editClientPassForm.value.r_password == editClientPassForm.value.new_password" style="color: rgb(72, 255, 72);" class="fa-solid fa-check mr-1 ml-1"></i>
+                                                        <span class="fas fa-lock" (click)="changeShowPass()"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <button type="submit" [disabled]="!editClientPassForm.valid" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Cập nhật</button>
+                                        <button type="button" (click)="showChangePass(false);" class="btn btn-secondary ml-1"><i class="fa-solid fa-rotate-left"></i> Hủy</button>
+                                    </div>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                </div>
+            </div>
+            </div>
+        </section>
+          
+    </div>
+  </div>

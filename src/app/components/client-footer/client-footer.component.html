@@ -1,0 +1,124 @@
+<footer class="text-center text-lg-start bg-light text-muted">
+  <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+    <div class="me-5 d-none d-lg-block">
+      <span>Kết nối với chúng tôi trên các mạng xã hội:</span>
+    </div>
+    <div>
+      <a class="me-4 text-reset">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a class="me-4 text-reset">
+        <i class="fas fa-envelope"></i>
+      </a>
+      <a class="me-4 text-reset">
+        <i class="fab fa-youtube"></i>
+      </a>
+    </div>
+  </section>
+
+  <section *ngIf="footer">
+    <div class="container text-center text-md-start mt-5">
+      <div class="row mt-3">
+        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-4">
+            <i class="fas fa-gem me-3"></i>{{footer.name_shop}}
+          </h6>
+          <div style="text-indent: 30px;">
+            <p  style="font-size: 13px;">{{footer.description}}</p>
+          </div>
+
+          <div>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d245.66856754233544!2d105.64505311745503!3d9.875761229394927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a0f3caffee52ad%3A0xa14b9279c5756b14!2zQ8OhIG3hu5tp!5e0!3m2!1svi!2s!4v1654251340638!5m2!1svi!2s" 
+            width="100%" height="" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+
+        </div>
+
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-4">Thể loại</h6>
+          <div *ngFor="let footer of categoris ; let i = index">
+            <a *ngIf="i<4" (click)="onActivate()" [routerLink]="['/search', footer.id]" style="text-decoration: none;"><h6>{{footer.name}}</h6></a>
+          </div>
+        </div>
+
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-4">Thương mại điện tử</h6>
+          <a *ngIf="footer.name_ecommerce_1" target="_blank" style="text-decoration: none;" href="{{footer.url_ecommerce_1}}"><h6>{{footer.name_ecommerce_1}}</h6></a> 
+          <a *ngIf="footer.name_ecommerce_2" target="_blank" style="text-decoration: none;" href="{{footer.url_ecommerce_2}}"><h6>{{footer.name_ecommerce_2}}</h6></a>
+          <a *ngIf="footer.name_ecommerce_3" target="_blank" style="text-decoration: none;" href="{{footer.url_ecommerce_3}}"><h6>{{footer.name_ecommerce_3}}</h6></a>
+        </div>
+
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+          <h6 class="text-uppercase fw-bold mb-4">Liên hệ</h6>
+          <p><i class="fas fa-home me-3"></i> {{footer.address}}</p>
+          <p><i class="fas fa-envelope me-3"></i> {{footer.email}}</p>
+          <p><i class="fas fa-phone me-3"></i> {{footer.phone_1}}</p>
+          <p><i class="fas fa-print me-3"></i>Zalo: {{footer.phone_2}}</p>
+        </div>
+
+      </div>
+    </div>
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05); margin-bottom: 20px;">
+      <a class="text-reset fw-bold" routerLink="/" (click)="onActivate()">{{footer.name_shop}}</a>
+    </div>
+  </section>
+
+  <section *ngIf="footerLocal">
+    <div class="container text-center text-md-start mt-5">
+      <div class="row mt-3">
+        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-4">
+            <i class="fas fa-gem me-3"></i>FISH NEW
+          </h6>
+          <div style="text-indent: 30px;">
+            <p style="font-size: 12px;">Xin chân thành cảm ơn các bạn đã đến fishnew.tk
+              Tại đây chúng tôi có thể cung cấp đến cho các bạn cá dòng cá phổ thông betta, guppy đẹp và giá cả vô cùng hợp lý. 
+              Các bạn không cần e ngại về chất lượng sản phẩm cam kết như mô tả sản phẩm đổi trả trong 7 ngày.
+              Chúng tôi có thể cung cấp sỉ và lẻ cho các bạn với giá hấp dẫn hãy liên hệ với chúng tôi khi cần bạn nhé!.</p>
+          </div>
+          <div>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d245.66856754233544!2d105.64505311745503!3d9.875761229394927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a0f3caffee52ad%3A0xa14b9279c5756b14!2zQ8OhIG3hu5tp!5e0!3m2!1svi!2s!4v1654251340638!5m2!1svi!2s" 
+            width="100%" height="" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-4">Thể loại</h6>
+          <div>
+            <a style="text-decoration: none;"><h6>Đang tải thể loại ...</h6></a>
+          </div>
+        </div>
+
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-4">Thương mại điện tử</h6>
+          <a style="text-decoration: none;" href="https://fishnew.tk/"><h6>Fishnew.tk</h6></a>
+        </div>
+
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+          <h6 class="text-uppercase fw-bold mb-4">Liên hệ</h6>
+          <p><i class="fas fa-home me-3"></i> 311 - Tân Thành - Tân Bình - Phụng Hiệp - Hậu Giang</p>
+          <p><i class="fas fa-envelope me-3"></i> fishnewtk@gmail.com</p>
+          <p><i class="fas fa-phone me-3"></i> +(84)799511326</p>
+          <p><i class="fas fa-print me-3"></i>Zalo: Zalo: 0799511326</p>
+        </div>
+
+      </div>
+    </div>
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05); margin-bottom: 20px;">
+      <a class="text-reset fw-bold" routerLink="/" (click)="onActivate()">FISH NEW</a>
+    </div>
+  </section>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5981944031527063"
+     crossorigin="anonymous"></script>
+<!-- ads footer -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5981944031527063"
+     data-ad-slot="6656494767"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</footer>

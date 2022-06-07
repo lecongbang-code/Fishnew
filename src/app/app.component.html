@@ -1,0 +1,16 @@
+<router-outlet (activate)="onActivate()"></router-outlet>
+
+<div *ngIf="loaderService.isLoading | async" class="overlay">
+    <div class="overlay__inner">
+        <div class="overlay__content">
+            <div id="loading-test-5" style="height: 300px; width: 100%;">
+                <div class="loading" style="text-align: center;" data-mdb-parent-selector="#loading-test-5">
+                    <div class="spinner-grow text-light m-2" role="status">
+                    </div>
+                    <div class="spinner-grow text-dark m-2" role="status">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

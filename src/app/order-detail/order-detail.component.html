@@ -1,0 +1,342 @@
+<div *ngIf="order.id" class="content-wrapper">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Chi tiết đơn hàng</h1>
+            
+            <div class="margin mt-3">
+              <div class="btn-group">
+                <button type="button" class="btn btn-default">{{order.status}}</button>
+                <button type="button" disabled class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+              </div>
+            </div>
+            
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a routerLink="../../">Admin</a></li>
+              <li class="breadcrumb-item active"><a routerLink="../../">Đơn hàng</a></li>
+              <li class="breadcrumb-item active">Chi tiết</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-12">
+              <div class="card">
+                  <div class="card-header border-transparent">
+                    <h3 class="card-title">Chi tiết đơn hàng (#{{order.id}})</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                  </div>
+                  <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table m-0">
+                        <thead>
+                        <tr>
+                            <th>Mã</th>
+                            <th>Tên khách</th>
+                            <th>SĐT</th>
+                            <th>Địa chỉ</th>
+                            <th>Tên đơn</th>
+                            <th>Đơn giá</th>
+                            <th>Ngày đặt</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                          <tr class="list-order">
+                              <td><a>#{{order.id}}</a></td>
+                              <td><div style="width: 150px;">{{order.client_name}}</div></td>
+                              <td><div style="width: 100px;">{{order.client_phone}}</div></td>
+                              <td><div style="width: 300px;">{{order.client_address}}</div></td>
+                              <td><div style="width: 280px;">{{order.order_name}}</div></td>
+                              <td><div style="width: 150px;" *ngIf="order.order_total_price">
+                                {{formatCash(order.order_total_price)}} VNĐ
+                              </div></td>
+                              <td><div style="width: 150px;">{{order.created_at | date: 'yyyy-MM-dd'}}</div></td>
+                              <td *ngIf="order.status == 'Đang chờ'" ><div style="width: 100px;"><span class="badge badge-warning">{{order.status}}</span></div></td>
+                              <td *ngIf="order.status == 'Đang lấy hàng'"><div style="width: 100px;"><span class="badge badge-secondary">{{order.status}}</span></div></td>
+                              <td *ngIf="order.status == 'Đang giao'"><div style="width: 100px;"><span class="badge badge-info">{{order.status}}</span></div></td>
+                              <td *ngIf="order.status == 'Đã nhận'"><div style="width: 100px;"><span class="badge badge-success">{{order.status}}</span></div></td>
+                              <td *ngIf="order.status == 'Đã hủy'"><div style="width: 100px;"><span class="badge badge-danger">{{order.status}}</span></div></td>
+                          </tr>
+                      </tbody>
+                        </table>
+                    </div>
+                  </div>
+                  
+              </div>
+              </div>
+          </div>
+          <!-- Main row -->
+          <div class="row">
+            <!-- Left col -->
+            <div class="col-md-8">
+              <!-- TABLE: LATEST ORDERS -->
+              <div class="card">
+                <div class="card-header border-transparent">
+                  <h3 class="card-title">Sản phẩm</h3>
+
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table class="table m-0">
+                      <thead>
+                      <tr>
+                        <th>STT</th>
+                        <th scope="col">Mã</th>
+                        <th colspan="2">Sản phẩm</th>
+                        <th>Phân loại</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
+                      </tr>
+                      </thead>
+                      <tbody *ngFor="let item of carts; let i=index">
+                      <tr class="list-order">
+                        <td>{{i+1}}</td>
+                        <td>#{{item.product_id}}</td>
+                        <td>
+                            <a style="cursor: pointer;" (click)="changeNameProduct(item)"><img width="100" height="60" src={{item.product_image_path}} alt=""></a>
+                        </td>
+                        <td><div style="width: 250px;"><a style="color: rgb(55, 165, 255); cursor: pointer;" (click)="changeNameProduct(item)">{{item.product_name}}</a></div></td>
+                        <td><div style="width: 150px;">Cá thể: {{item.product_sex}}, <br>Kích thước: {{item.product_size}}, <br>Màu: {{item.product_color}},</div></td>
+                        <td><div style="width: 110px;"*ngIf="item.product_new_price">{{formatCash(item.product_new_price)}} VNĐ</div></td>
+                        <td><div style="width: 80px;">{{item.product_number}}/{{list_amount_product[item.product_id]}}</div></td>
+                        <td><div style="width: 110px;"*ngIf="item.product_total_price">{{formatCash(item.product_total_price)}} VNĐ</div></td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.table-responsive -->
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Thông tin thanh toán</h3>
+
+                  <button style="cursor: pointer;" class="badge badge-secondary ml-3"
+                    [useExistingCss]="true"
+                    printSectionId="print-section"  
+                    ngxPrint>
+                    <i class="fa-solid fa-print"></i> In hóa đơn</button>
+
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="card-body p-0">
+                  <ul class="products-list product-list-in-card pl-2 pr-2">
+                    <li class="item">
+                      <div class="product-img">
+                        <img src="assets/img/default-150x150.png" alt="Avatar" class="img-size-50">
+                      </div>
+                      <div class="product-info">
+                        <a class="product-title">{{order.client_name}} (SĐT: {{order.client_phone}})</a>
+                        <span class="product-description">
+                          {{order.client_address}}
+                        </span>
+                      </div>
+                    </li>
+                    <li class="item pt-0">
+                      <div class="d-flex flex-column">
+                        <table class="table">
+                          <thead>
+                            <tr style="text-align: center;">
+                              <th scope="col">Stt</th>
+                              <th scope="col">Tên</th>
+                              <th scope="col">Phân loại</th>
+                              <th scope="col">SL</th>
+                              <th scope="col">Thành tiền</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of carts; let i = index">
+                              <td>{{i+1}}</td>
+                              <td><small class="text-muted">{{(item.product_name.length>15)? (item.product_name | slice:0:15)+'...':(item.product_name)}}</small></td>
+                              <td style="text-align: center;"><small class="text-muted">{{item.product_sex}},{{item.product_size}},{{item.product_color}}</small></td>
+                              <td style="text-align: center;"><small class="text-muted">x {{item.product_number}}</small></td>
+                              <td style="text-align: right;"><p>{{formatCash(item.product_total_price.toString())}} VNĐ</p></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div> 
+                          <span>Đơn giá sản phẩm:</span>
+                          <span class="red"> +{{formatCash((orderTotalPrice).toString())}} VNĐ</span> <br>
+                        </div>
+                        <div> 
+                          <span>Phí vận chuyển:</span>
+                          <span class="red"><del *ngIf="order.order_transport_fee == '0'" style="font-size: 12px;"> +30,000 VNĐ</del> +{{formatCash(order.order_transport_fee.toString())}} VNĐ</span> <br>
+                          <span style="color: red; font-size: 12px;">Miễn phí vận chuyển cho đơn hàng trên 169,000 VNĐ</span>
+                        </div>
+                        <div> 
+                          <span>Mã giảm giá:</span>
+                          <span *ngIf="order.bonuses != 0" style="font-size: 12px;" class="red"> {{order.bonus_code}}</span>
+                          <span *ngIf="order.bonuses == 0" style="font-size: 12px;" class="red"> Không</span>
+                        </div>
+                        <div class="mb-1">  
+                          <span>Giảm giá:</span>
+                          <span class="red"> -{{formatCash(order.bonuses.toString())}} VNĐ</span> <br>
+                        </div>
+
+                        <div *ngIf="order.status == 'Đang chờ'" class="mb-2">
+                          <label for="note-client" class="form-label">Đã trả trước {{formatCash(prepay.toString())}}/{{formatCash(order.order_total_price.toString())}} (VNĐ)</label>
+                          <input type="number" [(ngModel)]="prepay" (ngModelChange)="clientPrepay()"class="form-control">
+                        </div>
+
+                        <div *ngIf="order.status != 'Đang chờ'">
+                          <label for="note-client" class="form-label">Đã trả trước {{formatCash(order.order_prepay.toString())}}/{{formatCash(order.order_total_price.toString())}} (VNĐ)</label>
+                        </div>
+
+                        <div *ngIf="carts.length >= 1" class="d-flex justify-content-between"> <small class="text-muted" style="font-size: 20px;"><h4>Cần thanh toán</h4></small>
+                            <h5 style="font-size: 20px;">{{formatCash(order_total_after_prepay.toString())}} VNĐ</h5>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <div class="mb-2">
+                          <label for="note-client" class="form-label">Ghi chú cho người bán</label>
+                          <textarea class="form-control" disabled id="note-client" rows="3" style="max-height: 200px;">{{order.client_note}}</textarea>
+                        </div>
+
+                        <div class="form-check">
+                          <input class="form-check-input" style="width: 18px;" type="radio" name="flexRadioDefault" id="pay-1" checked>
+                          <label class="form-check-label" for="pay-1">
+                            Thanh toán khi nhận hàng
+                          </label>
+                        </div>
+                    </div>
+                    </li>
+                    <li class="item">
+                      <span class="badge badge-warning float-right mr-1">Ngày đặt: {{order.created_at | date: 'yyyy-MM-dd'}}</span>
+                      <span *ngIf="order.updated_at" class="badge badge-warning float-right mr-1">Ngày giao: {{order.updated_at | date: 'yyyy-MM-dd'}}</span>
+                      <span *ngIf="order.received_date" class="badge badge-warning float-right mr-1">Ngày nhận: {{order.received_date | date: 'yyyy-MM-dd'}}</span>
+                    </li>
+                  </ul>
+                </div>
+                <!-- /.card-body -->
+                <div *ngIf="order.status != 'Đã nhận'" class="card-footer text-center">
+                  <button (click)="finish(order.id)" *ngIf="order.status == 'Đang giao'" type="submit" class="btn btn-info mr-2">Hoàn thành</button>
+                  <button (click)="confirmFailureOrder(order)" *ngIf="order.status == 'Đang giao'" type="submit" class="btn btn-danger mr-2">Thất bại</button>
+                  <button (click)="delivery(order.id)" *ngIf="order.status == 'Đang lấy hàng'" type="submit" class="btn btn-info mr-2">Giao hàng</button>
+                  <button (click)="confirm(order.id)" *ngIf="order.status == 'Đang chờ'" [hidden]="!submit_status" type="submit" class="btn btn-info mr-2">Xác nhận</button>
+                  <button (click)="confirmCancelOrder(order)" *ngIf="order.status == 'Đang chờ'" class="btn btn-danger mr-2">Hủy</button>
+                  <button (click)="goBack()" class="btn btn-secondary"><i class="fa-solid fa-rotate-left"></i></button>
+                </div>
+                <div *ngIf="order.status == 'Đã nhận'" class="card-footer text-center">
+                  <button (click)="goBack()" class="btn btn-secondary"><i class="fa-solid fa-rotate-left"></i></button>
+                </div>
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </div>
+    </section>
+
+    <div *ngIf="footer.name_shop" id="print-section" style="width: 2480px; height: 900px;">
+      <div class="bill-content">
+        <div class="bill-header">
+            <div class="bill-header-left">
+                <img src="{{footer.logo}}" width="60" height="60" alt="">
+                <div class="name-shop"><span>{{footer.name_shop}}</span></div>
+            </div>
+            <div class="bill-header-right">
+                <span>MĐ: #{{order.id}}</span><br>
+                <span>Ngày đặt hàng: {{order.created_at | date:'yyyy-MM-dd'}}</span>
+            </div>
+        </div>
+        <div class="bill-from">
+            <span>Nơi gửi: <span class="bill-text">{{footer.address}}</span></span>
+            <div>
+                <span>Cửa hàng: <span class="bill-text">{{footer.name_shop}}</span></span>
+                <span style="float: right;">Điện thoại: <span class="bill-text">{{footer.phone_1}}</span></span>
+            </div>
+        </div>
+        <div class="bill-to">
+            <span>Nơi nhận: <span class="bill-text">{{order.client_address}}</span></span>
+            <div>
+                <span>Anh/chị: <span class="bill-text">{{order.client_name}}</span></span>
+                <span style="float: right;">Điện thoại: <span class="bill-text">{{order.client_phone}}</span></span>
+            </div>
+        </div>
+        <div class="bill-cart">
+            <div class="bill-list-cart">
+                <table style="width:100%;" class="table-bordered">
+                    <tr style="background: rgb(83, 83, 83)">
+                        <th>Stt</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Phân loại</th>
+                        <th>SL</th>
+                    </tr>
+                    <tr *ngFor="let item of carts; let i = index">
+                        <ng-container *ngIf="i+1<10">
+                          <td><span>{{i+1}}</span></td>
+                          <td><span>{{(item.product_name.length>20)? (item.product_name | slice:0:20)+'...':(item.product_name)}}</span></td>
+                          <td><span>{{item.product_sex}},{{item.product_size}},{{item.product_color}}</span></td>
+                          <td><span>x2</span></td>
+                        </ng-container>
+                    </tr>
+                </table>
+            </div>
+            <div class="bill-cart-bot">
+                <span style="font-size: 12px;">Một số sản phẩm có thể bị ẩn do danh sách quá dài</span>
+            </div>
+        </div>
+        <div class="bill-footer">
+            <div class="bill-footer-left">
+                <div class="bill-footer-left-top">
+                    <span>Thu tiền người nhận: </span> <br>
+                    <span style="font-size: 24px; font-weight: 900;">{{formatCash(order_total_after_prepay.toString())}} VNĐ</span>
+                </div>
+                <div class="bill-footer-left-bot">
+                    <span>Chỉ dẫn giao hàng:</span><br>
+                    <span>- Không đồng kiểm.</span><br>
+                    <span>- Chuyển hoàn sau 3 lần phát.</span><br>
+                    <span>- Lưu kho tối đa 5 ngày.</span><br>
+                </div>
+            </div>
+            <div class="bill-footer-right">
+                <span>Cá cảnh xin vui lòng để nơi có nhiệt độ không quá cao <i class="fa-solid fa-face-grin-beam-sweat"></i></span>
+            </div>
+        </div>
+        <div class="bill-bot">
+            <span>Cảm ơn bạn rất nhiều vì đã ủng hộ {{footer.name_shop}}!</span>
+        </div>
+      </div>
+  </div>
+</div>

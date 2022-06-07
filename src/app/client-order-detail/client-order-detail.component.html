@@ -1,0 +1,198 @@
+<div class="">
+    <ul class="nav nav-tabs mb-3">
+      <li class="nav-item">
+        <button class="nav-link" [routerLink]="['/information']">
+            <h6>Hồ sơ của tôi</h6>
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" [routerLink]="['/order']">
+            <h6>Đơn hàng</h6>
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" [routerLink]="['/cart']">
+            <h6>Giỏ hàng</h6>
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link active">
+            <h6>Chi tiết đơn hàng ( <span *ngIf="order.id">#{{order.id}} - {{order.status}}</span> )</h6>
+        </button>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane fade show active">
+        <div class="tab-pane mb-3">
+          <div class="row px-md-4 px-2 pt-0">
+            <div class="col-lg-8">
+              <p class="pb-2 fw-bold">Sản phẩm</p>
+              <div class="card">
+                  <div class="table-responsive">
+                    <table class="table table-striped mb-0" style="font-size: 13px;">
+                      <thead>
+                        <tr class="table-info">
+                            <th>Stt</th>
+                            <th>Sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of carts; let i = index" class="border-bottom">
+                        <td>{{i+1}}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                              <div style="width: 120px;">
+                                  <img style="cursor: pointer;" (click)="changeNameProduct(item)" class="pic" style="width: 100%; max-height: 80px;" src="{{item.product_image_path}}" alt=""> 
+                              </div>
+                              <div style="width: 140px;" class="ps-3 d-flex flex-column justify-content">
+                                    <small style="color: rgb(55, 165, 255); cursor: pointer;" (click)="changeNameProduct(item)"> 
+                                        <span class=" fw-bold">{{(item.product_name.length>20)? (item.product_name | slice:0:20)+'...':(item.product_name)}}</span> 
+                                    </small>
+                                    <small class=""> 
+                                      <span class=" text-muted">Cá thể: </span> 
+                                      <span class=" fw-bold">{{item.product_sex}}</span> 
+                                  </small>
+                                    <small class=""> 
+                                        <span class=" text-muted">Kích thước: </span> 
+                                        <span class=" fw-bold">{{item.product_size}}</span> 
+                                    </small>
+                                    <small class=""> 
+                                        <span class=" text-muted">Màu sắc: </span> 
+                                        <span class=" fw-bold">{{item.product_color}}</span> 
+                                    </small>
+                                    
+                              </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="width: 100px;">
+                                <p class="pe-3 text-muted text-decoration-line-through"><span>{{formatCash(item.product_old_price.toString())}} VNĐ</span></p>
+                                <p class="red">{{formatCash(item.product_new_price.toString())}} VNĐ</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="width: 60px;" class="d-flex">
+                              <label>{{item.product_number}}</label>
+                          </div>
+                        </td>
+                        <td>
+                            <div style="width: 100px;" class="d-flex">
+                                <p class="red">{{formatCash(item.product_total_price.toString())}} VNĐ</p>
+                            </div>
+                        </td>
+                      </tr>
+                      <tr *ngIf="carts.length < 1">
+                        <th colspan="6">Không có sản phẩm nào</th>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+            <div *ngIf="order.id" class="col-lg-4 payment-summary">
+              <p class="fw-bold pt-lg-0 pt-4 pb-2">Thanh toán</p>
+              <div class="card px-md-3 px-2 pt-4">
+                  <div class="unregistered mb-2"> <span class="py-1">Thông tin thanh toán</span> </div>
+                  <div class="d-flex flex-column">
+                    <table class="table">
+                      <thead>
+                        <tr style="text-align: center;" style="font-size: 13px;">
+                          <th scope="col">Tên</th>
+                          <th scope="col">Phân loại</th>
+                          <th scope="col">SL</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of carts; let i = index">
+                          <td><small class="text-muted">{{(item.product_name.length>20)? (item.product_name | slice:0:20)+'...':(item.product_name)}}</small></td>
+                          <td style="text-align: center;"><small class="text-muted">{{item.product_sex}},{{item.product_size}},{{item.product_color}}</small></td>
+                          <td style="text-align: center;"><small class="text-muted">x {{item.product_number}}</small></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div> 
+                      <span>Đơn giá sản phẩm:</span>
+                      <span class="red"> +{{formatCash(orderTotalPrice.toString())}} VNĐ</span> <br>
+                    </div>
+                    <div> 
+                      <span>Phí vận chuyển:</span>
+                      <span class="red"><del *ngIf="order.order_transport_fee == '0'" style="font-size: 12px;"> +30,000 VNĐ</del> +{{formatCash(order.order_transport_fee.toString())}} VNĐ</span> <br>
+                      <span style="color: red; font-size: 12px;">Miễn phí vận chuyển cho đơn hàng trên 169,000 VNĐ</span>
+                    </div>
+                    <div> 
+                      <span>Mã giảm giá:</span>
+                      <span *ngIf="order.bonus_code != '0'" style="font-size: 12px;" class="red"> {{order.bonus_code}}</span>
+                      <span *ngIf="order.bonus_code == '0'" style="font-size: 12px;" class="red"> Không</span>
+                    </div>
+                    <div class="mb-1">  
+                        <span>Giảm giá:</span>
+                        <span class="red"> -{{formatCash(order.bonuses.toString())}} VNĐ</span> <br>
+                      </div>
+                      <div>
+                        <label *ngIf="order.status != 'Đã nhận'" for="note-client" class="form-label">Đã trả trước {{formatCash(order.order_prepay.toString())}}/{{formatCash(order.order_total_price.toString())}} (VNĐ)</label>
+                        <label *ngIf="order.status == 'Đã nhận'" for="" class="form-label badge badge-success">Đã thanh toán</label>
+                      </div>
+
+                    <div *ngIf="carts.length >= 1" class="d-flex justify-content-between"> <small class="text-muted" style="font-size: 20px;">Cần thanh toán</small>
+                        <h5 style="font-size: 20px;">{{formatCash(order.order_total_price_old.toString())}} VNĐ</h5>
+                    </div>
+                  </div>
+                  
+                    <div>
+                      <div class="unregistered mb-2 mt-3"> <span class="py-1">Thông tin khách hàng</span> </div>
+
+                      <div class="mb-2">
+                        <label for="name-client" class="form-label">Họ tên</label>
+                        <input disabled type="text"  class="form-control" [value]="order.client_name" id="name-client" aria-describedby="emailHelp">
+                      </div>
+
+                      <div class="mb-2">
+                        <label for="phone-client" class="form-label">Số điện thoại</label>
+                        <input disabled type="number" class="form-control" [value]="order.client_phone" id="phone-client">
+                      </div>
+
+                      <div class="mb-2">
+                        <label for="address-client" class="form-label">Địa chỉ</label>
+                        <textarea disabled class="form-control" [value]="order.client_address" id="address-client" rows="3" style="max-height: 200px;"></textarea>
+                      </div>
+
+                      <div class="mb-2">
+                        <label for="note-client" class="form-label">Ghi chú cho người bán</label>
+                        <textarea disabled class="form-control" [value]="order.client_note" id="note-client" rows="3" style="max-height: 200px;"></textarea>
+                      </div>
+        
+                      <div class="form-check">
+                        <input disabled class="form-check-input" style="width: 18px;" type="radio" id="pay-1" checked>
+                        <label class="form-check-label" for="pay-1">
+                          Thanh toán khi nhận hàng
+                        </label>
+                      </div>
+
+                      <div class=" d-flex flex-column px-3 mb-1">
+                        <small class="text-muted pb-1">Ngày đặt: {{order.created_at | date: 'yyyy-MM-dd'}} </small>
+                      </div>
+                      <div *ngIf="order.updated_at" class=" d-flex flex-column px-3 mb-1">
+                        <small class="text-muted pb-1">Ngày giao: {{order.updated_at | date: 'yyyy-MM-dd'}} </small>
+                      </div>
+                      <div *ngIf="order.received_date" class=" d-flex flex-column px-3 mb-1">
+                        <small class="text-muted pb-1">Ngày nhận: {{order.received_date | date: 'yyyy-MM-dd'}} </small>
+                      </div>
+
+                      <div class="col d-flex justify-content-center" style="width: 100%;">
+                        <button *ngIf="order.status == 'Đang chờ'" (click)="confirmCancelOrder(order)" type="submit" class="btn btn-danger mb-2">Hủy</button>
+                        <button (click)="goBack()" class="btn btn-secondary mb-2 ml-1"><i class="fa-solid fa-rotate-left"></i></button>
+                      </div>
+
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

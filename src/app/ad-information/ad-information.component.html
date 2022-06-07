@@ -1,0 +1,156 @@
+<div class="content-wrapper">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Thông tin admin</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Admin</a></li>
+              <li class="breadcrumb-item active">Thông tin</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div *ngIf="acEdit" class="card card-warning">
+            <div class="card-header">
+              <h3 class="card-title">Cập nhật thông tin nhân viên</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="card card-warning">
+                    <div class="card-body">
+                      <form [formGroup]="editAdminForm" (submit)="saveAdmin()">
+                        <div class="row">
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <label>Tên</label>
+                                <input type="text" required="" formControlName="name" class="form-control">
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <label>Ảnh</label>
+                                <input type="text" required="" formControlName="avatar" class="form-control" placeholder="Nhập url ảnh">
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <label>Giới tính</label>
+                                <select formControlName="sex" class="form-control">
+                                  <option value="1">Nam</option>
+                                  <option value="0">Nữ</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <label>SĐT</label>
+                                <input type="text" required="" formControlName="phone" class="form-control" placeholder="Nhập số điện thoại">
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                  <label>Email</label>
+                                  <input type="email" required="" formControlName="email" class="form-control" placeholder="Nhập email">
+                                </div>
+                              </div>
+                              <div class="col-sm-3">
+                                <div class="form-group">
+                                  <label>Địa chỉ</label>
+                                  <input type="text" required="" formControlName="address" class="form-control" placeholder="Nhập địa chỉ">
+                                </div>
+                              </div>
+                          </div>
+                          <div class="card-footer text-center">
+                            <button type="submit" [disabled]="!editAdminForm.valid" class="btn btn-success mr-1"><i class="fa-solid fa-pen-to-square"></i> Lưu</button>
+                            <button (click)="changeAcEdit(false)" class="btn btn-secondary"><i class="fa-solid fa-rotate-left"></i> Hủy</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+          <div *ngIf="!acEdit" class="card card-info">
+            <div class="card-header">
+              <h3 class="card-title">Thông tin nhân viên</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="card card-warning">
+                    <div class="card-body">
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label>Tài khoản</label>
+                              <input type="text" disabled value="{{admin.username}}" class="form-control" disabled>
+                            </div>
+                          </div>
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <label>Tên</label>
+                                <input type="text" disabled value="{{admin.name}}" class="form-control">
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <label>Giới tính</label>
+                                <input *ngIf="admin.sex == true" type="text" disabled value="Nam" class="form-control">
+                                <input *ngIf="admin.sex != true" type="text" disabled value="Nữ" class="form-control">
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <label>SĐT</label>
+                                <input type="text" disabled value="{{admin.phone}}" class="form-control">
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                  <label>Email</label>
+                                  <input type="email" disabled value="{{admin.email}}" class="form-control">
+                                </div>
+                              </div>
+                              <div class="col-sm-3">
+                                <div class="form-group">
+                                  <label>Địa chỉ</label>
+                                  <input type="text" disabled value="{{admin.address}}" class="form-control">
+                                </div>
+                              </div>
+                          </div>
+                          <div class="card-footer text-center">
+                            <button form="add_event" (click)="changeAcEdit(true)" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Sửa</button>
+                        </div>
+                    </div>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>

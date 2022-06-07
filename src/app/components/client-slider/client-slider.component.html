@@ -1,0 +1,68 @@
+<div *ngIf="sliders" class="container">
+<div class="text-center"><h5 class="mb-2"><span style="font-weight: 400; font-size: 18px;">SẢN PHẨM KHÁC</span></h5></div>
+<div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
+
+<!--Indicators-->
+<ol class="carousel-indicators">
+  <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
+  <li data-target="#multi-item-example" data-slide-to="1"></li>
+</ol>
+<!--/.Indicators-->
+
+<!--Slides-->
+<div class="carousel-inner" role="listbox">
+
+  <!--First slide-->
+  <div class="carousel-item active">
+
+    <div *ngFor="let item of sliders ; let i = index">
+      <div *ngIf="i < 6" class="col-md-2" style="float:left">
+        <div class="card mb-2">
+          <div class="imange-product-card">
+            <img (click)="onActivate()" style="cursor: pointer;" (click)="changeNameProduct(item)" class="card-img-top mt-2" src="{{item.image_path_1}}" alt="{{item.name}}">
+            <div class="discount" *ngFor="let c of categoris" ><span *ngIf="item.category_id == c.id">{{c.name}}</span></div>
+          </div>
+          <div class="card-body p-2">
+            <h5 style="cursor: pointer;" (click)="onActivate()" (click)="changeNameProduct(item)" class="card-title"><span class="text-title">
+              {{ (item.name.length>20)? (item.name | slice:0:20)+'...':(item.name) }}
+            </span></h5>
+              <p class="card-text item-price-sale"><del>{{formatCash(item.old_price.toString())}} VNĐ</del> <span class="card-text-sale">(Giảm {{item.discount}}%)</span></p>
+              <p class="card-text item-price">{{formatCash(item.new_price.toString())}} VNĐ</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!--/.First slide-->
+
+  <!--Second slide-->
+  <div class="carousel-item">
+
+    <div *ngFor="let item of sliders ; let i = index">
+      <div *ngIf="i >= 6" class="col-md-2" style="float:left">
+        <div class="card mb-2">
+          <div class="imange-product-card">
+            <img (click)="onActivate()" [routerLink]="['/product-detail', item.id]" class="card-img-top mt-2" src="{{item.image_path_1}}" alt="{{item.name}}">
+            <div class="discount" *ngFor="let c of categoris" ><span *ngIf="item.category_id == c.id">{{c.name}}</span></div>
+          </div>
+          <div class="card-body p-2">
+            <h5 style="cursor: pointer;" (click)="onActivate()" [routerLink]="['/product-detail', item.id]" class="card-title"><span class="text-title">
+              {{ (item.name.length>20)? (item.name | slice:0:20)+'...':(item.name) }}
+            </span></h5>
+              <p class="card-text item-price-sale"><del>{{formatCash(item.old_price.toString())}} VNĐ</del> <span class="card-text-sale">(Giảm {{item.discount}}%)</span></p>
+              <p class="card-text item-price">{{formatCash(item.new_price.toString())}} VNĐ</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!--/.Second slide-->
+
+ 
+
+</div>
+<!--/.Slides-->
+
+</div>

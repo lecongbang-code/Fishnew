@@ -1,0 +1,42 @@
+<div class="hold-transition login-page" style="background-color: rgb(48, 54, 56);">
+    <div class="login-box">
+        <div class="login-logo">
+          <a routerLink="../home" style="color: white; font-weight: 900;"><b>Fish </b>New</a>
+        </div>
+        <div class="card">
+          <div class="card-body login-card-body">
+            <h3 class="login-box-msg">Admin - Đăng nhập</h3>
+            <form [formGroup]="loginForm" (submit)="loginSubmit()">
+              <div class="input-group mb-3">
+                <input type="text" required="" formControlName="username" class="form-control" placeholder="Tài khoản">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-envelope"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="input-group mb-3">
+                <input type="{{showTextPass}}" required="" formControlName="password" class="form-control" placeholder="Mật khẩu">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-lock" (click)="changeShowPass()"></span>
+                  </div>
+                </div>
+              </div>
+
+              <ngx-recaptcha2 #captchaElem
+                required=""
+                [siteKey]="siteKey"
+                formControlName="recaptcha">
+              </ngx-recaptcha2>
+
+              <div class="row mt-2">
+                <div class="col-6">
+                  <button type="submit" [disabled]="!loginForm.valid" class="btn btn-primary btn-block">Đăng nhập</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+</div>

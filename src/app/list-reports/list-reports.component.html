@@ -1,0 +1,56 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Phản hồi</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink="../">Admin</a></li>
+            <li class="breadcrumb-item active">Phản hồi</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Danh sách phản hồi</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <ul class="products-list product-list-in-card pl-2 pr-2">
+                <li class="item list" *ngFor="let item of listReport | paginate: { itemsPerPage: 15, currentPage: page, totalItems: totalLength }; let i = index">
+                <div class="">
+                    <a class="product-title ml-3">
+                        {{item.client_name}}
+                      <span class="badge badge-warning float-right">{{item.created_at | date:'yyyy-MM-dd'}}</span>
+                    </a>
+                    <span class="product-description ml-4">{{item.content}}</span>
+                </div>
+                </li>
+              </ul>
+            </div>
+            <div class="card-footer clearfix">
+                <pagination-controls previousLabel="" nextLabel="" (pageChange)="page = $event"></pagination-controls>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
