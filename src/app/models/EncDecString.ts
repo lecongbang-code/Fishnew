@@ -2,7 +2,7 @@ import * as CryptoJS from 'crypto-js';
 
 export class EncDecString
 {
-    private key: string='lecongbang';
+    private key: string='xxxxxxxxxxxxxx';
 
     Encrypt(str:string)
     {
